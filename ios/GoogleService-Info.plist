@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1073519462014-gb8kc2f8nvtpak8uu8pjq0emfb2u2ocr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1073519462014-gb8kc2f8nvtpak8uu8pjq0emfb2u2ocr</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>1073519462014-kk7n8oh1fedk9p3fr515eu5uhptli0vg.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAum2CPx7UAo9ptdGKln6tEnFQBelnNbQk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1073519462014</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.technomasr.venusrideclient</string>
+	<key>PROJECT_ID</key>
+	<string>venus-client-62ecc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>venus-client-62ecc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1073519462014:ios:4c4d4ba33044b677cd3a2f</string>
+	<key>DATABASE_URL</key>
+	<string>https://venus-client-62ecc-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
