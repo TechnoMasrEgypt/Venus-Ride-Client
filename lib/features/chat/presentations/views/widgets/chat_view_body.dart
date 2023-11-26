@@ -93,6 +93,7 @@ class _ChatViewBodyState extends State<ChatViewBody> {
               suffixIcon: InkWell(
                 onTap: (() {
                   ChatCubit.get(context).sendMessage(rideId: widget.rideId);
+                  // ChatCubit.get(context).resetMessageCount();
                   // BlocProvider.of<ChatCubit>(context)
                   //     .listViewController
                   //     .animateTo(

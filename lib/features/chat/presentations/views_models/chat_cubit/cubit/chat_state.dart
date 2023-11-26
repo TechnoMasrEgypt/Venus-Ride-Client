@@ -29,3 +29,5 @@ class ListenMessageRequest extends ChatState {}
 class ListenMessageLoading extends ChatState {}
 
 class ListenMessageLoaded extends ChatState {}
+
+class ResetMessageList extends ChatState {}

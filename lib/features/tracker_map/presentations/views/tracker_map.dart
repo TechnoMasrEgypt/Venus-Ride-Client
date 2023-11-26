@@ -11,6 +11,7 @@ import 'package:taxi/core/widgets/custom_loading_idicator.dart';
 import 'package:taxi/features/chat/presentations/views/chat_view.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../../core/utils/cache_helper.dart';
 import '../../../../core/utils/magic_router.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/widgets/custom_button.dart';
@@ -19,6 +20,7 @@ import '../../../../core/widgets/custom_icon_back.dart';
 import '../../../../core/widgets/custom_rating_bar.dart';
 import '../../../../global_variables.dart';
 import '../../../../translations/locale_keys.g.dart';
+import '../../../chat/presentations/views_models/chat_cubit/cubit/chat_cubit.dart';
 import '../../../home/presentations/views/canceling_reasons_view.dart';
 import '../../../home/presentations/views_models/get_direction_cubit/get_direction_cubit.dart';
 import '../../../home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
@@ -88,6 +90,12 @@ class _TrackerMapViewState extends State<TrackerMapView> {
         .then((value) => {mapTheme = value});
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   BlocProvider.of<ChatCubit>(context).resetMessageCount();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -105,6 +113,9 @@ class _TrackerMapViewState extends State<TrackerMapView> {
               ..getDriverDetails(
                   PostDetailsCubit.of(context).bookRideModel!.id),
           ),
+          BlocProvider(
+              create: (context) =>
+                  ChatCubit()..getAllMessages(rideId: widget.ride)),
         ],
         child: WillPopScope(
           onWillPop: () async => false,
@@ -314,20 +325,66 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                             SizedBox(
                                               width: 10.w,
                                             ),
-                                            SizedBox(
-                                              width: 80.w,
-                                              child: CustomButton(
-                                                borderColor: Colors.green,
-                                                text: 'Chat',
-                                                textColor: Colors.green,
-                                                backgroundColor: Colors.white,
-                                                onPressed: () =>
-                                                    MagicRouter.navigateTo(
-                                                        ChatView(
-                                                  driverName: widget.driver,
-                                                  rideId: widget.ride,
-                                                )),
-                                              ),
+                                            BlocBuilder<ChatCubit, ChatState>(
+                                              builder: (context, state) {
+                                                final cubit =
+                                                    ChatCubit.get(context);
+                                                final driver = cubit.isDriver(
+                                                    driverId: widget.iDdriver);
+                                                // int messageCount = cubit
+                                                //         .messages.isNotEmpty
+                                                //     ? cubit.messages.length
+                                                //     : 0;
+                                                return Stack(
+                                                  clipBehavior: Clip.none,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 80.w,
+                                                      child: CustomButton(
+                                                          borderColor:
+                                                              Colors.green,
+                                                          text: 'Chat',
+                                                          textColor:
+                                                              Colors.green,
+                                                          backgroundColor:
+                                                              Colors.white,
+                                                          onPressed: () {
+                                                            MagicRouter
+                                                                .navigateTo(
+                                                                    ChatView(
+                                                              driverName:
+                                                                  widget.driver,
+                                                              rideId:
+                                                                  widget.ride,
+                                                            ));
+                                                            cubit
+                                                                .resetMessageCount();
+                                                          }),
+                                                    ),
+                                                    // cubit.messages.any((message) =>
+                                                    //             message.userId
+                                                    //                 .toString() ==
+                                                    //             widget.iDdriver
+                                                    //                 .toString())
+                                                    driver &&
+                                                            cubit.messages
+                                                                .isNotEmpty
+                                                        ? Positioned(
+                                                            right: -4,
+                                                            top: -8,
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .red,
+                                                                  shape: BoxShape
+                                                                      .circle),
+                                                              width: 20.w,
+                                                              height: 20.h,
+                                                            ))
+                                                        : SizedBox()
+                                                  ],
+                                                );
+                                              },
                                             ),
                                             SizedBox(
                                               width: 10.w,

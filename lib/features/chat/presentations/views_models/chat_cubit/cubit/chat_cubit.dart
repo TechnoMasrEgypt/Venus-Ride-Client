@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,12 +14,13 @@ class ChatCubit extends Cubit<ChatState> {
 
   final TextEditingController controller = TextEditingController();
   final ScrollController listViewController = ScrollController();
-  CollectionReference messagesFirBase =
-      FirebaseFirestore.instance.collection(kMessagesCollection);
+  // CollectionReference messagesFirBase =
+  //     FirebaseFirestore.instance.collection(kMessagesCollection);
   List<MessageModel> messagesList = [];
   final chatRepo = ChatRepo();
   List<MessageModel> messages = [];
   ChatMessage? chatMessageModel;
+  String? userId;
 //send message firebase
   // void sendMessageFirebase({
   //   required String message,
@@ -135,12 +135,12 @@ class ChatCubit extends Cubit<ChatState> {
         messagesData.forEach((key, value) {
           String id = value['id'].toString();
           String message = value['message'].toString();
-          String userId = value['user_id'].toString();
+          userId = value['user_id'].toString();
           String createdAt = value['created_at'].toString();
           MessageModel newMessage = MessageModel(
               id: id,
               message: message,
-              userId: userId,
+              userId: userId!,
               createdAt: createdAt.toString());
           messages.add(newMessage);
           print('000000000000000');
@@ -148,11 +148,21 @@ class ChatCubit extends Cubit<ChatState> {
           print(message);
           print(userId);
           print(createdAt);
+          print(userId);
           print('000000000000000');
         });
         messages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
         emit(ListenMessageLoaded());
       }
     });
+  }
+
+  void resetMessageCount() {
+    messages.clear();
+    emit(ResetMessageList()); // Emit a new state with an empty messages list
+  }
+
+  bool isDriver({required String driverId}) {
+    return userId == driverId; // Check if the user's ID matches the driver's ID
   }
 }
