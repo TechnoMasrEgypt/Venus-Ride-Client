@@ -417,7 +417,7 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                       ? Center(
                           child: Text(
                           LocaleKeys
-                                  .Thedistanceislongyoushouldchooseaclosedestination
+                              .thedistanceislongyoushouldchooseaclosedestination
                               .tr(),
                           style: FontStyles.textStyle15,
                         ))

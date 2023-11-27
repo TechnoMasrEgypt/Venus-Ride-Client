@@ -21,6 +21,8 @@ class ChatCubit extends Cubit<ChatState> {
   List<MessageModel> messages = [];
   ChatMessage? chatMessageModel;
   String? userId;
+  GlobalKey<FormState> formKey = GlobalKey();
+
 //send message firebase
   // void sendMessageFirebase({
   //   required String message,
@@ -103,6 +105,11 @@ class ChatCubit extends Cubit<ChatState> {
   // }
 
   Future sendMessage({required int rideId}) async {
+    if (controller.text.length < 1) {
+      showSnackBar(
+        'write message',
+      );
+    }
     emit(SendMessageLoading());
     final res =
         await chatRepo.sendMessage(msg: controller.text, rideId: rideId);
@@ -143,14 +150,10 @@ class ChatCubit extends Cubit<ChatState> {
               userId: userId!,
               createdAt: createdAt.toString());
           messages.add(newMessage);
-          print('000000000000000');
-          print(id);
-          print(message);
-          print(userId);
-          print(createdAt);
-          print(userId);
-          print('000000000000000');
         });
+        // print('000000000000000');
+        // print(userId);
+        // print('000000000000000');
         messages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
         emit(ListenMessageLoaded());
       }

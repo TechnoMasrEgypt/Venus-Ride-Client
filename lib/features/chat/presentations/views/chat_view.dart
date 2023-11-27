@@ -6,9 +6,14 @@ import 'package:taxi/features/chat/presentations/views_models/chat_cubit/cubit/c
 import '../../../../core/utils/constants.dart';
 
 class ChatView extends StatelessWidget {
-  const ChatView({super.key, required this.driverName, required this.rideId});
+  const ChatView({
+    super.key,
+    required this.driverName,
+    required this.rideId,
+  });
   final String driverName;
   final int rideId;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +25,9 @@ class ChatView extends StatelessWidget {
       body: SafeArea(
           child: BlocProvider(
         create: (context) => ChatCubit()..getAllMessages(rideId: rideId),
-        child: ChatViewBody(rideId: rideId),
+        child: ChatViewBody(
+          rideId: rideId,
+        ),
       )),
     );
   }

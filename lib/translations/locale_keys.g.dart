@@ -107,6 +107,7 @@ abstract class  LocaleKeys {
   static const ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip = 'ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip';
   static const note = 'note';
   static const discount = 'discount';
-  static const Thedistanceislongyoushouldchooseaclosedestination = 'Thedistanceislongyoushouldchooseaclosedestination';
+  static const chat = 'chat';
+  static const thedistanceislongyoushouldchooseaclosedestination = 'thedistanceislongyoushouldchooseaclosedestination';
 
 }

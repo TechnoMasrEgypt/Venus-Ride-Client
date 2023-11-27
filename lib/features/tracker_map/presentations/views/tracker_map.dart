@@ -329,8 +329,8 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                               builder: (context, state) {
                                                 final cubit =
                                                     ChatCubit.get(context);
-                                                final driver = cubit.isDriver(
-                                                    driverId: widget.iDdriver);
+                                                // final driver = cubit.isDriver(
+                                                //     driverId: widget.iDdriver);
                                                 // int messageCount = cubit
                                                 //         .messages.isNotEmpty
                                                 //     ? cubit.messages.length
@@ -343,7 +343,8 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                                       child: CustomButton(
                                                           borderColor:
                                                               Colors.green,
-                                                          text: 'Chat',
+                                                          text: LocaleKeys.chat
+                                                              .tr(),
                                                           textColor:
                                                               Colors.green,
                                                           backgroundColor:
@@ -359,6 +360,22 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                                             ));
                                                             cubit
                                                                 .resetMessageCount();
+
+                                                            // if (cubit.messages
+                                                            //         .isNotEmpty &&
+                                                            //     cubit.messages.any(
+                                                            //         (message) =>
+                                                            //             message
+                                                            //                 .userId
+                                                            //                 .toString() ==
+                                                            //             widget
+                                                            //                 .iDdriver)) {
+                                                            //   print(
+                                                            //       'At least one message has the userId equal to widget.iDdriver');
+                                                            // } else {
+                                                            //   print(
+                                                            //       'No message has the userId equal to widget.iDdriver');
+                                                            // }
                                                           }),
                                                     ),
                                                     // cubit.messages.any((message) =>
@@ -366,9 +383,15 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                                     //                 .toString() ==
                                                     //             widget.iDdriver
                                                     //                 .toString())
-                                                    driver &&
-                                                            cubit.messages
-                                                                .isNotEmpty
+
+                                                    cubit.messages.isNotEmpty &&
+                                                            cubit.messages.any((message) =>
+                                                                message
+                                                                    .userId !=
+                                                                CacheHelper.getData(
+                                                                        key:
+                                                                            'userId')
+                                                                    .toString())
                                                         ? Positioned(
                                                             right: -4,
                                                             top: -8,

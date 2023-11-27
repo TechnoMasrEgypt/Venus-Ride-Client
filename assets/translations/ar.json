@@ -104,5 +104,7 @@
   "tripBookedSuccessfully": "تم حجز الرحله بنجاح",
   "ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip": "إذا قمت بإلغاء الرحلة ، فسيتم إضافة نصف دينار إلى رحلتك القادمة.",
   "note": "ملحوظة",
-  "discount": "تخفيض"
+  "discount": "تخفيض",
+  "chat": "محادثة",
+  "thedistanceislongyoushouldchooseaclosedestination": "المسافة طويلة يجب عليك اختيار وجهة قريبة"
 }

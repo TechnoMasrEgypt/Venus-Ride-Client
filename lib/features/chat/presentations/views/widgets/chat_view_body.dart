@@ -7,7 +7,10 @@ import '../../../../../core/utils/constants.dart';
 
 // ignore: must_be_immutable
 class ChatViewBody extends StatefulWidget {
-  const ChatViewBody({super.key, required this.rideId});
+  const ChatViewBody({
+    super.key,
+    required this.rideId,
+  });
 
   @override
   State<ChatViewBody> createState() => _ChatViewBodyState();
@@ -84,40 +87,52 @@ class _ChatViewBodyState extends State<ChatViewBody> {
         //         ),
         // ),
 
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: TextField(
-            controller: BlocProvider.of<ChatCubit>(context).controller,
-            onSubmitted: (data) {},
-            decoration: InputDecoration(
-              suffixIcon: InkWell(
-                onTap: (() {
-                  ChatCubit.get(context).sendMessage(rideId: widget.rideId);
-                  // ChatCubit.get(context).resetMessageCount();
-                  // BlocProvider.of<ChatCubit>(context)
-                  //     .listViewController
-                  //     .animateTo(
-                  //       0,
-                  //       duration: const Duration(microseconds: 500),
-                  //       curve: Curves.easeIn,
-                  //     );
-                }),
-                child: const Icon(
-                  Icons.send,
-                  color: kDeepBlue,
+        Form(
+          key: BlocProvider.of<ChatCubit>(context).formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: TextFormField(
+              controller: BlocProvider.of<ChatCubit>(context).controller,
+              decoration: InputDecoration(
+                suffixIcon: InkWell(
+                  onTap: (() {
+                    if (BlocProvider.of<ChatCubit>(context)
+                        .formKey
+                        .currentState!
+                        .validate()) {
+                      ChatCubit.get(context).sendMessage(rideId: widget.rideId);
+                      print('111111');
+                      print(CacheHelper.getData(key: 'userId').toString());
+                      //  print(widget.driverId);
+                      print('111111');
+                    }
+
+                    // ChatCubit.get(context).resetMessageCount();
+                    // BlocProvider.of<ChatCubit>(context)
+                    //     .listViewController
+                    //     .animateTo(
+                    //       0,
+                    //       duration: const Duration(microseconds: 500),
+                    //       curve: Curves.easeIn,
+                    //     );
+                  }),
+                  child: const Icon(
+                    Icons.send,
+                    color: kDeepBlue,
+                  ),
                 ),
-              ),
-              hintText: 'Send Message',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kDeepBlue),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: kDeepBlue),
+                hintText: 'Send Message',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: kDeepBlue),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(color: kDeepBlue),
+                ),
               ),
             ),
           ),

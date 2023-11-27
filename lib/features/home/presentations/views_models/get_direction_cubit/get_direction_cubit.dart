@@ -38,7 +38,7 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   late double latx;
   late double lngx;
   bool testNull = false;
-  TextEditingController controller = TextEditingController();
+  //TextEditingController controller = TextEditingController();
   final Completer<GoogleMapController> controllerx = Completer();
   late GoogleMapController mapController;
   bool isAvailable = false;
