@@ -29,12 +29,10 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   GetDirectionCubit() : super(GetDirectionInitial());
 
   static GetDirectionCubit of(context) => BlocProvider.of(context);
-
   DirectionDetails? directionDetails;
-  NotificationDetails? notificationDetails;
   ReceiptModel? receiptModel;
   DriverModel? driverModel;
-
+  StreamSubscription<DatabaseEvent>? listenNotificationSubscription;
   late double latx;
   late double lngx;
   bool testNull = false;
@@ -48,7 +46,6 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   BitmapDescriptor sourceIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor destinationIcon = BitmapDescriptor.defaultMarker;
   BitmapDescriptor currentLocationIcon = BitmapDescriptor.defaultMarker;
-
   // void getPolyPoints() async {
   //   emit(PolyLoaded());
   //   PolylinePoints polylinePoints = PolylinePoints();
@@ -66,6 +63,12 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   //     emit(PolyLoading());
   //   }
   // }
+  @override
+  Future<void> close() {
+    listenNotificationSubscription?.cancel();
+    // TODO: implement close
+    return super.close();
+  }
 
   void getCurrentPositionUpdate() async {
     Position position = await Geolocator.getCurrentPosition(
@@ -142,10 +145,12 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
 
 //////////
   void getRequest() async {
-    listenNotification.onValue.listen((DatabaseEvent event) async {
-      emit(GetDirectionGetRequest());
+    listenNotificationSubscription =
+        listenNotification.onValue.listen((DatabaseEvent event) async {
+      print("start 2");
+      emit(GetDirectionGetRequest(state.travelState));
       if (event.snapshot.value == null) {
-        emit(GetDirectionDoneRequest());
+        emit(GetDirectionDoneRequest(state.travelState));
         return;
       } else {
         final data = event.snapshot.value as Map;
@@ -159,17 +164,19 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
         int ride = data['ride'];
         driverId = iDdriver;
         driverPhone = phone;
-        log('222222222222222222222222');
-        log('$driverId');
+        emit(GetDirectionDoneRequest(state.travelState));
+
+        //log('$driverId');
         assetsAudioPlayer.play();
         Timer(const Duration(seconds: 3), () {
           assetsAudioPlayer.stop();
         });
         showSnackBar(LocaleKeys.driverIsAccepted.tr(),
             margin: EdgeInsets.only(bottom: 500.h, left: 25.w, right: 25.w));
-        log('222222222222222222222222');
-        emit(GetDirectionDoneRequest());
+        emit(GetDirectionDoneRequest(state.travelState));
         getDriverLocation();
+        print("test1111");
+
         MagicRouter.navigateTo(TrackerMapView(
           iDdriver: iDdriver,
           board: board,
@@ -180,18 +187,54 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
           ride: ride,
           type: type,
         ));
+        print("test5555");
         listenNotification.remove();
-        emit(GetDirectionGetRequest());
+
+        listenNotificationSubscription?.cancel();
+        emit(GetDirectionGetRequest(state.travelState));
+      }
+    });
+  }
+
+  void getarrived() async {
+    listenNotificationSubscription =
+        listenNotification.onValue.listen((DatabaseEvent event) async {
+      print("start 2");
+      emit(GetDirectionGetRequest(state.travelState));
+      if (event.snapshot.value == null) {
+        emit(GetDirectionDoneRequest(state.travelState));
+        return;
+      } else {
+        final data = event.snapshot.value as Map;
+        String status = data['status'].toString();
+
+        emit(GetDirectionDoneRequest(state.travelState));
+        if (status == "intheway") {
+          assetsAudioPlayer.play();
+          Timer(const Duration(seconds: 3), () {
+            assetsAudioPlayer.stop();
+          });
+          showSnackBar("بدأت الرحله",
+              margin: EdgeInsets.only(bottom: 500.h, left: 25.w, right: 25.w));
+          changetravelstate("بدأت الرحله");
+          emit(GetDirectionDoneRequest(state.travelState));
+
+          listenNotification.remove();
+
+          listenNotificationSubscription?.cancel();
+        }
+        //log('$driverId');
       }
     });
   }
 
   Future<Position> getDriverLocation() async {
-    emit(GetDriverDataLoad());
+    emit(GetDriverDataLoad(state.travelState));
     reference.onValue.listen((DatabaseEvent event) async {
-      emit(GetDriverDataLoaded());
+      // emit(GetDriverDataLoaded());
       if (event.snapshot.value == null) {
-        emit(GetDriverDataLoadingDone());
+        emit(GetDriverDataLoadingDone(state.travelState));
+        panelController.open();
         return;
       } else {
         final Map data = event.snapshot.value as Map;
@@ -212,14 +255,18 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
             heading: double.parse(heading),
             speed: double.parse(speed),
             speedAccuracy: double.parse(speedAccuracy),
-            timestamp: null);
+            timestamp: null,
+            altitudeAccuracy: 0,
+            headingAccuracy: 0);
         GoogleMapController googleMapController = await controllerx.future;
         googleMapController.animateCamera(CameraUpdate.newCameraPosition(
             CameraPosition(
                 zoom: 17.5,
                 target: LatLng(
                     driverLocation.latitude, driverLocation.longitude))));
-        emit(GetDriverDataLoadingDone());
+        panelController.open();
+
+        emit(GetDriverDataLoadingDone(state.travelState));
       }
     });
     return driverLocation;
@@ -229,9 +276,9 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   void getReceipt() async {
     // emit(GetDirectionGetRequest());
     listenReceipt.onValue.listen((DatabaseEvent event) async {
-      emit(GetDirectionLoading());
+      emit(GetDirectionLoading(state.travelState));
       if (event.snapshot.value == null) {
-        emit(GetDirectionDoneRequest());
+        emit(GetDirectionDoneRequest(state.travelState));
         return;
       } else {
         final data = event.snapshot.value as Map;
@@ -277,7 +324,7 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
           late: late,
           discount: discount,
         ));
-        emit(GetDirectionFinish());
+        emit(GetDirectionFinish(state.travelState));
         log(distance);
         log(cost);
         await listenReceipt.remove();
@@ -289,14 +336,16 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
 /////////////
   void driverArrived() async {
     listenDriverArrived.onValue.listen((DatabaseEvent event) {
-      emit(GetDirectionLoading());
+      emit(GetDirectionLoading(state.travelState));
       if (event.snapshot.value == null) {
-        emit(GetDirectionDoneRequest());
+        emit(GetDirectionDoneRequest(state.travelState));
         return;
       } else {
         // ignore: unused_local_variable
         final data = event.snapshot.value as Map;
         log('arrived');
+        emit(GetDirectionFinish(state.travelState));
+
         showSnackBar(LocaleKeys.driverIsArrived.tr(),
             margin: EdgeInsets.only(bottom: 500.h, left: 25.w, right: 25.w));
         assetsAudioPlayer.play();
@@ -305,16 +354,25 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
         });
         listenDriverArrived.remove();
 
-        emit(GetDirectionFinish());
+        changetravelstate("وصل الكابتن");
+
+        emit(GetDirectionFinish(state.travelState));
       }
     });
   }
 
+  void changetravelstate(String temp) {
+    emit(GetDirectionFinish(temp));
+
+
+    emit(GetDirectionFinish2(temp));
+  }
+
   void drivercancelled(context) async {
     listenDriverCanceled.onValue.listen((DatabaseEvent event) {
-      emit(GetDirectionLoading());
+      emit(GetDirectionLoading(state.travelState));
       if (event.snapshot.value == null) {
-        emit(GetDirectionDoneRequest());
+        emit(GetDirectionDoneRequest(state.travelState));
         return;
       } else {
         // ignore: unused_local_variable
@@ -327,7 +385,7 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
         });
 
         listenDriverCanceled.remove();
-        emit(GetDirectionFinish());
+        emit(GetDirectionFinish(state.travelState));
       }
     });
   }

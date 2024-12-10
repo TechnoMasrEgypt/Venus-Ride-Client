@@ -61,7 +61,10 @@ class _SplashViewBodyState extends State<SplashViewBody> {
           ),
         ),
         child: SizedBox(
-          child: Image.asset(AppAssets.splashLogo),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Image.asset(AppAssets.splashLogo),
+          ),
         ),
       ),
     );

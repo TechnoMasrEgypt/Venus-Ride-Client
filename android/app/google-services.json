@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "1073519462014",
+    "firebase_url": "https://venus-client-62ecc-default-rtdb.firebaseio.com",
     "project_id": "venus-client-62ecc",
-    "storage_bucket": "venus-client-62ecc.appspot.com"
+    "storage_bucket": "venus-client-62ecc.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1073519462014:android:4b843fe5b9058d74cd3a2f",
+        "mobilesdk_app_id": "1:1073519462014:android:70e56946397017a6cd3a2f",
         "android_client_info": {
-          "package_name": "com.technomasr.venusrideclient"
+          "package_name": "com.techmasr.venusclient"
         }
       },
       "oauth_client": [
@@ -29,6 +30,73 @@
             {
               "client_id": "1073519462014-06b4q2j0ipn1st2pajk0susfknrre3mg.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1073519462014-gb8kc2f8nvtpak8uu8pjq0emfb2u2ocr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.technomasr.venusrideclient"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1073519462014:android:4b843fe5b9058d74cd3a2f",
+        "android_client_info": {
+          "package_name": "com.technomasr.venusrideclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1073519462014-crcc32qn23r4dibe6frb9456b8618lh6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technomasr.venusrideclient",
+            "certificate_hash": "d9c87d61c78bce0e3bd6913238735c3d434749ad"
+          }
+        },
+        {
+          "client_id": "1073519462014-nac2l6ibu181g65g1u5ccd975kdd0qo6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technomasr.venusrideclient",
+            "certificate_hash": "cae1a0dbdd6906e34ae98ffb8819e7056ab3a8e6"
+          }
+        },
+        {
+          "client_id": "1073519462014-vv383s57hddksov9ken1rcmr6rjp0pd9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technomasr.venusrideclient",
+            "certificate_hash": "ca0e142ea3feb77b0fe82fb654f2b68173f4f0ff"
+          }
+        },
+        {
+          "client_id": "1073519462014-06b4q2j0ipn1st2pajk0susfknrre3mg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIsYZ_GgnRSoW1rwlhsIGlC7JRwPYJOt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1073519462014-06b4q2j0ipn1st2pajk0susfknrre3mg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1073519462014-gb8kc2f8nvtpak8uu8pjq0emfb2u2ocr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.technomasr.venusrideclient"
+              }
             }
           ]
         }

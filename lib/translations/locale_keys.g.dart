@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const desc1 = 'desc1';
   static const message = 'message';
   static const bookRide = 'bookRide';
@@ -10,22 +10,24 @@ abstract class  LocaleKeys {
   static const recent = 'recent';
   static const orSignINWIth = 'orSignINWIth';
   static const pickupAddressAsIncorrect = 'pickupAddressAsIncorrect';
-  static const pleaseSelectTheReasonForCrancellation = 'pleaseSelectTheReasonForCrancellation';
+  static const pleaseSelectTheReasonForCrancellation =
+      'pleaseSelectTheReasonForCrancellation';
   static const searchingForDriver = 'searchingForDriver';
   static const setYourLocation = 'setYourLocation';
   static const showOnMap = 'showOnMap';
   static const signUp = 'signUp';
-  static const deleteAccount  = 'deleteAccount ';
+  static const deleteAccount = 'deleteAccount ';
   static const contactUsBeACaptin = 'contactUsBeACaptin';
-  static const privacyPolicy  = 'privacyPolicy ';
+  static const privacyPolicy = 'privacyPolicy ';
   static const raiseissue = 'raiseissue';
-  static const rideHistory  = 'rideHistory ';
+  static const rideHistory = 'rideHistory ';
   static const tellUs = 'tellUs';
   static const yourMessageHere = 'yourMessageHere';
   static const alreadyHaveAnAccount = 'alreadyHaveAnAccount';
   static const yourTaxiHasArrived = 'yourTaxiHasArrived';
   static const thePriceIsNotReasonable = 'thePriceIsNotReasonable';
-  static const sorrythereAreNoVehiclesInThisArea = 'sorrythereAreNoVehiclesInThisArea';
+  static const sorrythereAreNoVehiclesInThisArea =
+      'sorrythereAreNoVehiclesInThisArea';
   static const dontHaveAnAccount = 'dontHaveAnAccount';
   static const idontWantToShare = 'idontWantToShare';
   static const imGoingTo = 'imGoingTo';
@@ -35,10 +37,10 @@ abstract class  LocaleKeys {
   static const getStarted = 'getStarted';
   static const forgePassword = 'forgePassword';
   static const signIn = 'signIn';
-  static const emailOrPhoneNumber  = 'emailOrPhoneNumber ';
+  static const emailOrPhoneNumber = 'emailOrPhoneNumber ';
   static const name = 'name';
   static const email = 'email';
-  static const phoneNumber  = 'phoneNumber ';
+  static const phoneNumber = 'phoneNumber ';
   static const confirmPassword = 'confirmPassword';
   static const password = 'password';
   static const resendCode = 'resendCode';
@@ -46,8 +48,10 @@ abstract class  LocaleKeys {
   static const confirm = 'confirm';
   static const forgetYourPassword = 'forgetYourPassword';
   static const yourPhoneNumber = 'yourPhoneNumber';
-  static const IfYouNeedHelpResettingYourPassword = 'IfYouNeedHelpResettingYourPassword';
-  static const weCanHelpYouSendingYouLinkToReset = 'weCanHelpYouSendingYouLinkToReset';
+  static const IfYouNeedHelpResettingYourPassword =
+      'IfYouNeedHelpResettingYourPassword';
+  static const weCanHelpYouSendingYouLinkToReset =
+      'weCanHelpYouSendingYouLinkToReset';
   static const changeLanguage = 'changeLanguage';
   static const support = 'support';
   static const fAQ = 'fAQ';
@@ -57,19 +61,20 @@ abstract class  LocaleKeys {
   static const km = 'km';
   static const inx = 'inx';
   static const mins = 'mins';
-  static const  tripFare = ' tripFare';
+  static const tripFare = ' tripFare';
   static const previousCancelFees = 'previousCancelFees';
   static const subTotal = 'subTotal';
   static const userName = 'userName';
-  static const contactUs  = 'contactUs ';
-  static const followOnSocialMedia  = 'followOnSocialMedia ';
-  static const sendAMesssege  = 'sendAMesssege ';
+  static const contactUs = 'contactUs ';
+  static const followOnSocialMedia = 'followOnSocialMedia ';
+  static const sendAMesssege = 'sendAMesssege ';
   static const no = 'no';
   static const yes = 'yes';
   static const stay = 'stay';
   static const areYouSureYouWantToLogOut = 'areYouSureYouWantToLogOut';
   static const yourTripHasEnded = 'yourTripHasEnded';
-  static const areYouSureYouWantToDeletehisAccount = 'areYouSureYouWantToDeletehisAccount';
+  static const areYouSureYouWantToDeletehisAccount =
+      'areYouSureYouWantToDeletehisAccount';
   static const rate = 'rate';
   static const complain = 'complain';
   static const cancel = 'cancel';
@@ -81,16 +86,21 @@ abstract class  LocaleKeys {
   static const submit = 'submit';
   static const isRequired = 'isRequired';
   static const locationNotAvailable = 'locationNotAvailable';
-  static const areYouSureYouWantToCancelSearching = 'areYouSureYouWantToCancelSearching';
+  static const areYouSureYouWantToCancelSearching =
+      'areYouSureYouWantToCancelSearching';
   static const noInternetConnectivity = 'noInternetConnectivity';
-  static const pleaseProvideAValidEmailAddress = 'pleaseProvideAValidEmailAddress';
-  static const pleaseProvideAValidPasswordShouldGreaterThan8Character = 'pleaseProvideAValidPasswordShouldGreaterThan8Character';
-  static const pleaseProvideAValidPhoneNumber  = 'pleaseProvideAValidPhoneNumber ';
+  static const pleaseProvideAValidEmailAddress =
+      'pleaseProvideAValidEmailAddress';
+  static const pleaseProvideAValidPasswordShouldGreaterThan8Character =
+      'pleaseProvideAValidPasswordShouldGreaterThan8Character';
+  static const pleaseProvideAValidPhoneNumber =
+      'pleaseProvideAValidPhoneNumber ';
   static const PleaseEnterASimilarPassword = 'PleaseEnterASimilarPassword';
   static const pinCodeIncorrect = 'pinCodeIncorrect';
   static const loggingYouIn = 'loggingYouIn';
   static const venusRideIsYourFastestChoice = 'venusRideIsYourFastestChoice';
-  static const venusRideIsYourMostAbundantChoice = 'venusRideIsYourMostAbundantChoice';
+  static const venusRideIsYourMostAbundantChoice =
+      'venusRideIsYourMostAbundantChoice';
   static const venusRideIsYourBestChoice = 'venusRideIsYourBestChoice';
   static const late = 'late';
   static const setDestination = 'setDestination';
@@ -104,10 +114,13 @@ abstract class  LocaleKeys {
   static const driverIsAccepted = 'driverIsAccepted';
   static const backToHome = 'backToHome';
   static const tripBookedSuccessfully = 'tripBookedSuccessfully';
-  static const ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip = 'ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip';
+  static const ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip =
+      'ifyoucancelthetriphalfdinarwillbeaddedtoyournexttrip';
   static const note = 'note';
   static const discount = 'discount';
   static const chat = 'chat';
-  static const thedistanceislongyoushouldchooseaclosedestination = 'thedistanceislongyoushouldchooseaclosedestination';
-
+  static const thedistanceislongyoushouldchooseaclosedestination =
+      'thedistanceislongyoushouldchooseaclosedestination';
+  static const wait = 'waitingtext';
+  static const phoneaddition = 'phoneaddition';
 }

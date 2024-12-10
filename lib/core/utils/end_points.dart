@@ -26,4 +26,6 @@ abstract class EndPoints {
   static const String promoCode = 'checkCoupon';
   static const String createNewToken = 'createNewToken';
   static const String sendMessage = 'rides/chat/ride';
+  //new 2024
+  static const String checkInRide = 'rides/OngoingRide';
 }

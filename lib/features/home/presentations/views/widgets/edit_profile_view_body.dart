@@ -58,8 +58,9 @@ class EditProfileViewBody extends StatelessWidget {
                             onTap: () async {
                               final image = await ImagePicker()
                                   .pickImage(source: ImageSource.gallery);
-                              cubit.photo = image!;
-                              await cubit.editImageProfile();
+                                  cubit.changeimage(image);
+
+                              //await cubit.editImageProfile();
                               // buildGetImageBottomSheet(context)
                             },
                             child: Stack(

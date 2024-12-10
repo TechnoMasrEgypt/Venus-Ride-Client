@@ -7,9 +7,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
+import 'package:taxi/core/utils/cache_helper.dart';
 import 'package:taxi/core/utils/magic_router.dart';
 import 'package:taxi/core/widgets/custom_text_form.dart';
 import 'package:taxi/features/after_splash/presentations/views/after_splash_view.dart';
+import 'package:taxi/features/home/presentations/views/widgets/spinner.dart';
 import 'package:taxi/features/home/presentations/views_models/get_direction_cubit/get_direction_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
@@ -257,8 +259,55 @@ Future<dynamic> buildSearchModalBottomSheet(BuildContext context) {
                         LocaleKeys.noInternetConnectivity.tr(),
                       );
                     }
-                    MagicRouter.pop();
-                    buildBookRideShowModalBottomSheet(context);
+                    if (destinationController.text == '') {
+                      /* showSnackBar('Enter the destination please'
+                          //   LocaleKeys.noInternetConnectivity.tr(),
+                          );*/
+                      print(100);
+                      /* ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Enter the destination please'),
+                        ),
+                      );*/
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(
+                              Localizations.localeOf(context).languageCode ==
+                                      'en'
+                                  ? 'Warring'
+                                  : " تحذير",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            content: Text(
+                              Localizations.localeOf(context).languageCode ==
+                                      'en'
+                                  ? 'Enter the destination please'
+                                  : " يرجي تحديد وجهتك",
+                              style: TextStyle(fontSize: 15),
+                              // textAlign: TextAlign.center,
+                            ),
+                            actions: [
+                              TextButton(
+                                child: Text(Localizations.localeOf(context)
+                                            .languageCode ==
+                                        'en'
+                                    ? 'OK'
+                                    : "تم"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      MagicRouter.pop();
+                      buildBookRideShowModalBottomSheet(context);
+                    }
+
                     // print(getDirectionCubit.notificationDetails!.ride);
                     //print(getDirectionCubit.notificationDetails!.driver);
                     // print(getDirectionCubit.notificationDetails!.lat);
@@ -293,7 +342,7 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return SizedBox(
-            height: 250.h,
+            height: 350,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -302,7 +351,22 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                     child: BlocBuilder<PromoCodeCubit, PromoCodeState>(
                       builder: (BuildContext context, state) {
                         return state is SendMsgLoaded
-                            ? const CircularProgressIndicator()
+                            ? Column(
+                                children: [
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: SpinImage(
+                                      imageUrl: AppAssets.loadingimage,
+                                    ),
+                                  ),
+                                  SizedBox(height: 20),
+                                  Text(
+                                    LocaleKeys.wait.tr(),
+                                    style: FontStyles.textStyle18,
+                                  ),
+                                ],
+                              )
                             : Card(
                                 elevation: 4,
                                 shadowColor: Colors.blueGrey,
@@ -350,8 +414,9 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                               ],
                                             ),
                                             Container(
-                                              width: 60.w,
-                                              height: 30.h,
+                                              padding: EdgeInsets.all(1),
+                                              width: 70.w,
+                                              //height: 80,
                                               decoration: BoxDecoration(
                                                   color:
                                                       const Color(0xffD5DDE0),
@@ -363,7 +428,7 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                                   : Text(
                                                       textAlign:
                                                           TextAlign.center,
-                                                      '${getDirectionCubit.directionDetails!.durationText} ${LocaleKeys.mins.tr()}',
+                                                      '${getDirectionCubit.directionDetails!.durationText} ',
                                                       style: FontStyles
                                                           .textStyle15
                                                           .copyWith(
@@ -425,7 +490,22 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                           BlocBuilder<PostDetailsCubit, PostDetailsState>(
                           builder: (context, state) {
                             return state is PostDetailsLoading
-                                ? CircularProgressIndicator()
+                                ? Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: SpinImage(
+                                          imageUrl: AppAssets.loadingimage,
+                                        ),
+                                      ),
+                                      SizedBox(height: 20),
+                                      Text(
+                                        LocaleKeys.wait.tr(),
+                                        style: FontStyles.textStyle18,
+                                      ),
+                                    ],
+                                  )
                                 : CustomButton(
                                     backgroundColor: kDeepBlue,
                                     text: LocaleKeys.bookRide.tr(),
@@ -465,6 +545,9 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                         coupunId: promoCodeCubit
                                             .promoCodeModel?.coupon.id,
                                       );
+                                      getDirectionCubit
+                                          .changetravelstate("وافق السائق");
+
                                       getDirectionCubit.driverArrived();
                                       //getDirectionCubit.drivercancelled(context);
                                       // MagicRouter.navigateTo(const SearchingCarView())
@@ -515,7 +598,22 @@ Future<dynamic> buildBookRideShowModalBottomSheetWithoutDes(
               child: BlocBuilder<PromoCodeCubit, PromoCodeState>(
                 builder: (BuildContext context, state) {
                   return state is SendMsgLoaded
-                      ? const CircularProgressIndicator()
+                      ? Column(
+                          children: [
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: SpinImage(
+                                imageUrl: AppAssets.loadingimage,
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              LocaleKeys.wait.tr(),
+                              style: FontStyles.textStyle18,
+                            ),
+                          ],
+                        )
                       : promoCodeCubit.promoCodeModel != null
                           ? Text(
                               promoCodeCubit.promoCodeModel!.message,
@@ -560,7 +658,23 @@ Future<dynamic> buildBookRideShowModalBottomSheetWithoutDes(
             Center(child: BlocBuilder<PostDetailsCubit, PostDetailsState>(
               builder: (context, state) {
                 return state is PostDetailsLoading
-                    ? CircularProgressIndicator()
+                    ? //CircularProgressIndicator()
+                    Column(
+                        children: [
+                          SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: SpinImage(
+                              imageUrl: AppAssets.loadingimage,
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Text(
+                            LocaleKeys.wait.tr(),
+                            style: FontStyles.textStyle18,
+                          ),
+                        ],
+                      )
                     : CustomButton(
                         backgroundColor: kDeepBlue,
                         text: LocaleKeys.bookRide.tr(),
@@ -581,6 +695,7 @@ Future<dynamic> buildBookRideShowModalBottomSheetWithoutDes(
                             cost: 0,
                             coupunId: promoCodeCubit.promoCodeModel?.coupon.id,
                           );
+                          getDirectionCubit.changetravelstate("وافق السائق");
                           getDirectionCubit.driverArrived();
 
                           //getDirectionCubit.drivercancelled(context);
@@ -598,6 +713,7 @@ Future<dynamic> buildBookRideShowModalBottomSheetWithoutDes(
   );
 }
 
+/*
 Future<dynamic> buildRateModalBottomSheet(BuildContext context) {
   // final cubit = GetDirectionCubit.of(context);
 
@@ -605,6 +721,7 @@ Future<dynamic> buildRateModalBottomSheet(BuildContext context) {
   final postCubit = PostDetailsCubit.of(context);
   dynamic rate;
   return showModalBottomSheet(
+    backgroundColor: Colors.white70,
     isScrollControlled: true,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -662,6 +779,7 @@ Future<dynamic> buildRateModalBottomSheet(BuildContext context) {
                         ),
                         Positioned(
                           top: 50.h,
+                          left: 10,
                           child: Padding(
                             padding: EdgeInsets.all(16.w),
                             child: Column(
@@ -777,7 +895,7 @@ Future<dynamic> buildRateModalBottomSheet(BuildContext context) {
     ),
   );
 }
-
+*/
 Future<dynamic> buildContactDriverBottomSheet(BuildContext context) {
   return showModalBottomSheet(
     isScrollControlled: true,
@@ -926,6 +1044,7 @@ Future<dynamic> showCancleAlertDialog({
                     onPressed: () {
                       MagicRouter.navigateAndPopAll(const AfterSplashView());
                       listenDriverCanceled.remove();
+                      listenNotification.onChildAdded.drain();
                       listenNotification.remove();
                     },
                   ),
@@ -933,4 +1052,152 @@ Future<dynamic> showCancleAlertDialog({
               ],
             ),
           )));
+}
+
+Future<dynamic> buildRateModalBottomSheet(BuildContext context) {
+  final cubitDriver = RateCubit.of(context);
+  final postCubit = PostDetailsCubit.of(context);
+  double rate = 0;
+
+  return showModalBottomSheet(
+    backgroundColor: Colors.transparent,
+    isScrollControlled: true,
+    context: context,
+    builder: (context) => Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30.r),
+          bottomRight: Radius.circular(30.r),
+          bottomLeft: Radius.circular(30.r),
+        ),
+      ),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: BlocProvider(
+        create: (context) => GetDriverCubit()
+          ..getDriverDetails(PostDetailsCubit.of(context).bookRideModel!.id),
+        child: BlocBuilder<GetDriverCubit, GetDriverState>(
+          builder: (context, state) {
+            final getDriver = GetDriverCubit.of(context);
+            return state is GetDriverLoading
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    height: 440.h,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          top: -50.h,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: CircleAvatar(
+                              radius: 50.r,
+                              backgroundColor: Colors.white,
+                              child: getDriver.getDriverData?.photo == null
+                                  ? Image.asset('assets/images/user.png',
+                                      width: 80.w, height: 80.w)
+                                  : Container(
+                                      width: 80.w,
+                                      height: 80.w,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                              getDriver.getDriverData!.photo),
+                                        ),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16.w, 60.h, 16.w, 16.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    getDriver.getDriverData?.name ?? '',
+                                    style: FontStyles.textStyle18,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 8.w, vertical: 4.h),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffD5DDE0),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Text(
+                                      getDriver.getDriverData?.carBoard
+                                              .toString() ??
+                                          '',
+                                      style: FontStyles.textStyle15
+                                          .copyWith(color: Colors.black),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+                              Text(
+                                getDriver.getDriverData?.carType ?? '',
+                                style: FontStyles.textStyle15.copyWith(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(height: 20.h),
+                              Center(
+                                child: RatingBar.builder(
+                                  itemSize: 22.r,
+                                  initialRating: 0,
+                                  minRating: 0,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding:
+                                      EdgeInsets.symmetric(horizontal: 2.w),
+                                  itemBuilder: (context, _) =>
+                                      Icon(Icons.star, color: Colors.amber),
+                                  onRatingUpdate: (rating) {
+                                    rate = rating;
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 15.h),
+                              CustomMessageTextField(
+                                hint: LocaleKeys.yourMessageHere.tr(),
+                                maxLines: 4,
+                                controller: cubitDriver.msgController,
+                              ),
+                              SizedBox(height: 20.h),
+                              BlocBuilder<RateCubit, RateState>(
+                                builder: (context, state) {
+                                  return Center(
+                                    child: CustomButton(
+                                      text: LocaleKeys.rate.tr(),
+                                      textColor: Colors.white,
+                                      backgroundColor: kDeepBlue,
+                                      onPressed: () => cubitDriver.rating(
+                                          rate, postCubit.bookRideModel!.id),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+          },
+        ),
+      ),
+    ),
+  );
 }

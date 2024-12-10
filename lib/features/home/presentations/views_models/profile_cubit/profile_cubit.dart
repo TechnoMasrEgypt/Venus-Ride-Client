@@ -40,6 +40,13 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
   }
 
+  void changeimage(XFile? image) {
+    emit(EditProfileDetailsLoading());
+
+    photo = image; //
+    emit(GetProfileDetailChangedimage());
+  }
+
   Future editProfileDetails() async {
     emit(EditProfileDetailsLoading());
     final res = await profileRepo.editProfileDetails(
@@ -58,7 +65,11 @@ class ProfileCubit extends Cubit<ProfileState> {
         log(userData!.photo);
         await CacheHelper.saveData(key: 'userName', value: res.data.name);
         await CacheHelper.saveData(key: 'phone', value: res.data.phone);
-        await CacheHelper.saveData(key: 'photo', value: res.data.photo);
+        if (photo != null) {
+          await editImageProfile();
+        }
+
+        // await CacheHelper.saveData(key: 'photo', value: res.data.photo);
         MagicRouter.navigateAndPopAll(const AfterSplashView());
         emit(ProfileInitial());
       },
@@ -77,6 +88,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       (res) async {
         showSnackBar(res.message);
         log(res.message);
+
+        log(res.data.photo);
         // showSnackBar('تم تحديث الصوره الشخصيه');
         await CacheHelper.saveData(key: 'photo', value: res.data.photo);
         emit(ProfileInitial());

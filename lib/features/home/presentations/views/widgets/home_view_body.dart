@@ -250,6 +250,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     }
                     try {
                       buildSearchModalBottomSheet(context);
+                      GetDirectionCubit.of(context)
+                          .changetravelstate("وافق السائق");
                     } catch (e) {
                       CacheHelper.getData(key: 'lang') == 'en'
                           ? showSnackBar('Choose your address')

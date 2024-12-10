@@ -9,7 +9,7 @@
   "orSignINWIth": "أو قم بتسجيل الدخول باستخدام",
   "pickupAddressAsIncorrect": "عنوان الإستلام غير صحيح",
   "pleaseSelectTheReasonForCrancellation": "الرجاء تحديد سبب الإلغاء",
-  "searchingForDriver": "البحث عن سائق",
+  "searchingForDriver": "جاري البحث عن سائق",
   "setYourLocation": "حدد موقعك",
   "showOnMap": "إعرض على الخريطة",
   "signUp": "اشتراك",
@@ -106,5 +106,7 @@
   "note": "ملحوظة",
   "discount": "تخفيض",
   "chat": "محادثة",
-  "thedistanceislongyoushouldchooseaclosedestination": "المسافة طويلة يجب عليك اختيار وجهة قريبة"
+  "thedistanceislongyoushouldchooseaclosedestination": "المسافة طويلة يجب عليك اختيار وجهة قريبة",
+  "waitingtext": "جاري البحث عن سائق يرجي الانتظار",
+  "phoneaddition": " ابتداء من *****07"
 }

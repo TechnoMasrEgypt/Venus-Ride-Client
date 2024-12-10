@@ -102,9 +102,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   },
                   label: currentIndex < boarding.length - 1
                       ? Text(LocaleKeys.next.tr(),
-                          style: TextStyle(fontSize: 18.sp))
+                          style:
+                              TextStyle(fontSize: 18.sp, color: Colors.white))
                       : Text(LocaleKeys.getStarted.tr(),
-                          style: TextStyle(fontSize: 15.sp)),
+                          style:
+                              TextStyle(fontSize: 15.sp, color: Colors.white)),
                 ),
               ),
             ],

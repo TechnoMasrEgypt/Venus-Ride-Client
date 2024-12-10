@@ -106,5 +106,7 @@
   "note": "Note",
   "discount": "Discount",
   "chat": "Chat",
-  "thedistanceislongyoushouldchooseaclosedestination": "Thedistanceislongyoushouldchooseaclosedestination"
+  "thedistanceislongyoushouldchooseaclosedestination": "Thedistanceislongyoushouldchooseaclosedestination",
+  "waitingtext": "Searching for driver please wait",
+  "phoneaddition": "starting with 07*****"
 }

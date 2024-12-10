@@ -89,10 +89,28 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        LocaleKeys.phoneNumber.tr(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 13.sp),
+                      RichText(
+                        text: TextSpan(
+                          text: LocaleKeys.phoneNumber.tr(), // Localized text
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13.sp,
+                            color: Colors
+                                .black, // Ensure to set the color since TextSpan doesn't inherit color from parent by default
+                          ),
+                          children: [
+                            TextSpan(
+                              text: " " +
+                                  LocaleKeys.phoneaddition
+                                      .tr(), // Additional text
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13.sp,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
                       customTextField(
@@ -107,6 +125,7 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                                   countryListTheme: CountryListThemeData(
                                       bottomSheetHeight: 500.h),
                                   context: context,
+                                  showPhoneCode: false,
                                   onSelect: (value) {
                                     setState(() {
                                       selectedCountry = value;
@@ -116,7 +135,8 @@ class _RegisterViewBodyState extends State<RegisterViewBody> {
                             child: Padding(
                               padding: EdgeInsets.all(6.0.w),
                               child: Text(
-                                '${selectedCountry.flagEmoji} +${selectedCountry.phoneCode}',
+                                '${selectedCountry.flagEmoji}  ',
+                                // '${selectedCountry.flagEmoji} ',
                                 style: TextStyle(fontSize: 18.sp),
                               ),
                             ),

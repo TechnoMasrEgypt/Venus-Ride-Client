@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import '../../../../core/utils/app_storage.dart';
 import '../../../../core/utils/dio_helper.dart';
 import '../../../../core/utils/end_points.dart';
@@ -10,9 +11,11 @@ import '../models/user_model.dart';
 
 class LoginRepo {
   Future<Either<String, UserModel>> login(String email, String password) async {
+    final devicetoken = await FirebaseMessaging.instance.getToken();
     final response = await DioHelper.post(EndPoints.login, body: {
       'email': email,
       'password': password,
+      'device_token': devicetoken,
     }, headers: {
       'Accept': 'application/json',
       'lang': AppStorage.getLang,

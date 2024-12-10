@@ -51,22 +51,24 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDIsYZ_GgnRSoW1rwlhsIGlC7JRwPYJOt0',
-    appId: '1:1073519462014:android:4b843fe5b9058d74cd3a2f',
+    appId: '1:1073519462014:android:70e56946397017a6cd3a2f',
     messagingSenderId: '1073519462014',
     projectId: 'venus-client-62ecc',
-    storageBucket: 'venus-client-62ecc.appspot.com',
+    databaseURL: 'https://venus-client-62ecc-default-rtdb.firebaseio.com',
+    storageBucket: 'venus-client-62ecc.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAum2CPx7UAo9ptdGKln6tEnFQBelnNbQk',
-    appId: '1:1073519462014:ios:4c4d4ba33044b677cd3a2f',
+    appId: '1:1073519462014:ios:f5d134fe39534a1bcd3a2f',
     messagingSenderId: '1073519462014',
     projectId: 'venus-client-62ecc',
-    storageBucket: 'venus-client-62ecc.appspot.com',
-    iosClientId:
-        '1073519462014-gb8kc2f8nvtpak8uu8pjq0emfb2u2ocr.apps.googleusercontent.com',
-    iosBundleId: 'com.technomasr.venusrideclient',
+    databaseURL: 'https://venus-client-62ecc-default-rtdb.firebaseio.com',
+    storageBucket: 'venus-client-62ecc.firebasestorage.app',
+    androidClientId: '1073519462014-crcc32qn23r4dibe6frb9456b8618lh6.apps.googleusercontent.com',
+    iosBundleId: 'com.tech.venusclient',
   );
+
 }
 
 class DefaultFirebaseOptionsCaptin {

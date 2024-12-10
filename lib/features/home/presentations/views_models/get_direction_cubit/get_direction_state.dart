@@ -1,37 +1,63 @@
 part of 'get_direction_cubit.dart';
 
-abstract class GetDirectionState extends Equatable {
-  const GetDirectionState();
-  @override
-  List<Object> get props => [];
+abstract class GetDirectionState {
+  final String travelState;
+  const GetDirectionState(this.travelState);
 }
 
-class GetDirectionInitial extends GetDirectionState {}
+final class GetDirectionInitial extends GetDirectionState {
+  const GetDirectionInitial() : super("وافق السائق");
+}
 
-class GetDirectionLoading extends GetDirectionState {}
+final class GetDirectionLoading extends GetDirectionState {
+  const GetDirectionLoading(String travelState) : super(travelState);
+}
 
-class GetDirectionLoad extends GetDirectionState {}
+final class GetDirectionLoad extends GetDirectionState {
+  const GetDirectionLoad(String travelState) : super(travelState);
+}
 
-class GetDirectionFinish extends GetDirectionState {}
+final class GetDirectionFinish extends GetDirectionState {
+  const GetDirectionFinish(String travelState) : super(travelState);
+}
 
-class GetDirectionFinish2 extends GetDirectionState {}
+final class GetDirectionFinish2 extends GetDirectionState {
+  const GetDirectionFinish2(String travelState) : super(travelState);
+}
 
-class GetDirectionGetRequest extends GetDirectionState {}
+final class GetDirectionGetRequest extends GetDirectionState {
+  const GetDirectionGetRequest(String travelState) : super(travelState);
+}
 
-class GetDirectionDoneRequest extends GetDirectionState {}
+final class GetDirectionDoneRequest extends GetDirectionState {
+  const GetDirectionDoneRequest(String travelState) : super(travelState);
+}
 
-class GetDriverDataLoaded extends GetDirectionState {}
+final class GetDriverDataLoaded extends GetDirectionState {
+  const GetDriverDataLoaded(String travelState) : super(travelState);
+}
 
-class GetDriverDataLoading extends GetDirectionState {}
+final class GetDriverDataLoading extends GetDirectionState {
+  const GetDriverDataLoading(String travelState) : super(travelState);
+}
 
-class GetDriverDataLoadingDone extends GetDirectionState {}
+final class GetDriverDataLoadingDone extends GetDirectionState {
+  const GetDriverDataLoadingDone(String travelState) : super(travelState);
+}
 
-class GetDriverDataLoad extends GetDirectionState {}
+final class GetDriverDataLoad extends GetDirectionState {
+  const GetDriverDataLoad(String travelState) : super(travelState);
+}
 
-class PolyLoaded extends GetDirectionState {}
+final class PolyLoaded extends GetDirectionState {
+  const PolyLoaded(String travelState) : super(travelState);
+}
 
-class PolyLoading extends GetDirectionState {}
+final class PolyLoading extends GetDirectionState {
+  const PolyLoading(String travelState) : super(travelState);
+}
 
-class TestNull extends GetDirectionState {}
-// class GetDirectionGetRequest extends GetDirectionState {}
+final class TestNull extends GetDirectionState {
+  const TestNull() : super("No State");
+}// class GetDirectionGetRequest extends GetDirectionState {}
 // class GetDirectionDoneRequest extends GetDirectionState {}

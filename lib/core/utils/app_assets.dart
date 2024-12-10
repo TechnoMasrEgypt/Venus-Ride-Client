@@ -1,5 +1,5 @@
 class AppAssets {
-  static const splash = 'assets/images/splash.jpeg';
+  static const splash = 'assets/images/splash.png';
   static const splashLogo = 'assets/images/splash_logo.png';
   static const onboarding1 = 'assets/images/onboarding1.png';
   static const onboarding2 = 'assets/images/onboarding2.png';
@@ -7,6 +7,7 @@ class AppAssets {
   static const logo = 'assets/images/logo.png';
   static const googleIcon = 'assets/images/google-icon.png';
   static const facebookIcon = 'assets/images/facebook-icon.png';
+  static const loadingimage = 'assets/images/wait.png';
   // static const twitter = 'assets/images/twitter-icon.png';
   static const search = 'assets/images/search.png';
   static const user = 'assets/images/user.png';

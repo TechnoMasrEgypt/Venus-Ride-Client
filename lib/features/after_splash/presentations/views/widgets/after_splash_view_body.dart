@@ -78,7 +78,11 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
               SizedBox(
                 height: 40.h,
               ),
-              Center(child: Image.asset(AppAssets.logo)),
+              Center(
+                  child: Image.asset(
+                AppAssets.logo,
+                height: 200,
+              )),
               SizedBox(
                 height: 30.h,
               ),

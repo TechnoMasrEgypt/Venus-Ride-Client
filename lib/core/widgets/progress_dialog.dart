@@ -1,8 +1,9 @@
 // ignore_for_file: must_be_immutable, library_prefixes, use_key_in_widget_constructors, file_names
 
 import 'package:flutter/material.dart';
-import 'package:gradient_ui_widgets/gradient_ui_widgets.dart'
-    as GradientWidgets;
+import 'package:taxi/core/widgets/gradient_progress_indicator.dart';
+
+
 
 class ProgressDialog extends StatelessWidget {
   final String status;
@@ -33,7 +34,7 @@ class ProgressDialog extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              GradientWidgets.GradientCircularProgressIndicator(
+             GradientCircularProgressIndicator(
                 valueGradient: g1,
                 backgroundColor: Colors.grey[200],
               ),

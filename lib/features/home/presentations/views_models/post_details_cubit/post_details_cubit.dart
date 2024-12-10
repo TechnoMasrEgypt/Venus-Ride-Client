@@ -2,7 +2,9 @@ import 'dart:math';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:taxi/features/tracker_map/presentations/views/tracker_map.dart';
 import '../../../../../core/utils/app_storage.dart';
 import '../../../../../core/utils/magic_router.dart';
 import '../../../../../core/widgets/custom_snackbar.dart';
@@ -78,6 +80,11 @@ class PostDetailsCubit extends Cubit<PostDetailsState> {
         emit(PostDetailsError());
       },
       (res) async {
+        print("start 1");
+
+        /*   final widget =
+            ModalRoute.of(MagicRouter.currentContext!)?.settings.;
+        print("testtesttest" + widget!.toString());*/
         showSnackBar(res.message);
         // showSnackBar(LocaleKeys.tripBookedSuccessfully.tr());
         // showSnackBar(AppStorage.getLang == 'en'?'Trip Booked Successfully ':'تم حجز الرحله بنجاح');
@@ -85,6 +92,7 @@ class PostDetailsCubit extends Cubit<PostDetailsState> {
         rideIdCancel = bookRideModel!.id;
         log(bookRideModel!.id);
         emit(PostDetailsLoaded());
+        //  if (!(widget is TrackerMapView))
         MagicRouter.navigateAndPopAll(const SearchingCarView());
       },
     );
