@@ -10,14 +10,14 @@ class RideStoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MultiBlocProvider(
+    return MultiBlocProvider(
       providers: [
-         BlocProvider(
-              create: (context) => HistotyRideDetailsCubit(),
-            ),
-            BlocProvider(
-              create: (context) => RideHistoryCubit()..getRideHistory(),
-            ),
+        BlocProvider(
+          create: (context) => HistotyRideDetailsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => RideHistoryCubit()..getRideHistory(),
+        ),
       ],
       child: const Scaffold(
         body: RideStoryViewBody(),

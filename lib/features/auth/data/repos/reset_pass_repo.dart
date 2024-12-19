@@ -10,16 +10,14 @@ import '../../../../core/utils/error_model.dart';
 
 class ResetPassRepo {
   Future<Either<String, ResetPassModel>> resetPass(
-       String password,String passwordConfirmation) async {
+      String password, String passwordConfirmation) async {
     final response = await DioHelper.post(EndPoints.resetPass, body: {
       'password': password,
       'password_confirmation': passwordConfirmation,
-    },
-    headers: {
+    }, headers: {
       'lang': AppStorage.getLang,
       'user': CacheHelper.getData(key: 'userId'),
-    }
-    );
+    });
     try {
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         print("Success ResetPassRepo");

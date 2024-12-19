@@ -7,5 +7,7 @@ abstract class GetDriverState extends Equatable {
 }
 
 class GetDriverInitial extends GetDriverState {}
+
 class GetDriverLoading extends GetDriverState {}
+
 class GetDriverDone extends GetDriverState {}

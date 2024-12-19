@@ -4,30 +4,33 @@
 
 import 'dart:convert';
 
-ComplaintsModel complaintsModelFromJson(String str) => ComplaintsModel.fromJson(json.decode(str));
+ComplaintsModel complaintsModelFromJson(String str) =>
+    ComplaintsModel.fromJson(json.decode(str));
 
-String complaintsModelToJson(ComplaintsModel data) => json.encode(data.toJson());
+String complaintsModelToJson(ComplaintsModel data) =>
+    json.encode(data.toJson());
 
 class ComplaintsModel {
-    ComplaintsModel({
-        required this.status,
-        required this.message,
-        required this.data,
-    });
+  ComplaintsModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-    String status;
-    String message;
-    List<dynamic> data;
+  String status;
+  String message;
+  List<dynamic> data;
 
-    factory ComplaintsModel.fromJson(Map<String, dynamic> json) => ComplaintsModel(
+  factory ComplaintsModel.fromJson(Map<String, dynamic> json) =>
+      ComplaintsModel(
         status: json["status"],
         message: json["message"],
         data: List<dynamic>.from(json["data"].map((x) => x)),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x)),
-    };
+      };
 }

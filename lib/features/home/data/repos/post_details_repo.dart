@@ -55,6 +55,7 @@ class PostDetailsRepo {
     log(DateFormat.Hm('en_US').format(DateTime.now()).substring(0, 5));
     log(currentLat.toString());
     log(currentLong.toString());
+    print("sss" + response.toString());
 
     try {
       if (response.statusCode == 200) {
@@ -69,7 +70,8 @@ class PostDetailsRepo {
             .message
             .toString());
       }
-    } catch (e) {
+    } catch (e, track) {
+      print(track);
       return Left(e.toString());
     }
   }

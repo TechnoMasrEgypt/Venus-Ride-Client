@@ -12,25 +12,27 @@ part 'cancelled_search_state.dart';
 class CancelledSearchCubit extends Cubit<CancelledSearchState> {
   CancelledSearchCubit() : super(CancelledSearchInitial());
 
-   static CancelledSearchCubit of(context) => BlocProvider.of(context);
+  static CancelledSearchCubit of(context) => BlocProvider.of(context);
 
   final cancelledSearchRepo = CancelledSearchRepo();
   Future cancelRide(int rideId) async {
     emit(CancelledSearchInitial());
     final res = await cancelledSearchRepo.cancelSearch(rideId);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err.toString());
         log('error');
         emit(CancelledSearchLoading());
-        MagicRouter.navigateAndPopAll(const UnsupportedLocationView());
+        MagicRouter.navigateAndPopAll(const AfterSplashView());
+        // MagicRouter.navigateAndPopAll(const UnsupportedLocationView());
       },
-          (res) async {
+      (res) async {
         emit(CancelledSearchSuc());
-        showSnackBar( CacheHelper.getData(key: 'lang') !='en'
-                  ?res.message:'Search is Cancelled');
+        showSnackBar(CacheHelper.getData(key: 'lang') != 'en'
+            ? res.message
+            : 'Search is Cancelled');
         log('sucess');
-        
+
         MagicRouter.navigateAndPopAll(const AfterSplashView());
       },
     );

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxi/features/home/presentations/views_models/Check_ride_cubit/check_ride_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/notfication_cubit/cubit/notfication_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
@@ -75,8 +76,7 @@ void main() async {
     print('Got a message whilst in the foreground!');
     print('Message data: ${message.data}');
     RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification!.android;
-    if (notification != null && android != null) {
+    if (notification != null) {
       flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
@@ -167,6 +167,9 @@ class _TaxiState extends State<Taxi> {
             ),
             BlocProvider(
               create: (context) => GetDriverCubit(),
+            ),
+            BlocProvider(
+              create: (context) => CheckRideCubit(),
             ),
             BlocProvider(
               create: (context) => RateCubit(),

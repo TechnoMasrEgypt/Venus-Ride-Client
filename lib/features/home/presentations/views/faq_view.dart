@@ -8,7 +8,7 @@ class FAQsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: BlocProvider(
         create: (context) => FaqsCubit()..getFAQs(),
         child: const FAQsViewBody(),
@@ -16,4 +16,3 @@ class FAQsView extends StatelessWidget {
     );
   }
 }
-

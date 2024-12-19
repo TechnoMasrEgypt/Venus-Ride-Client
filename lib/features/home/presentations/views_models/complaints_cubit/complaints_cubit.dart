@@ -13,20 +13,22 @@ class ComplaintsCubit extends Cubit<ComplaintsState> {
   final msgController = TextEditingController();
   final complaintsRepo = ComplaintsRepo();
 
-  Future sendMsgComplaints( int rideId) async {
+  Future sendMsgComplaints(int rideId) async {
     emit(SendMsgInitial());
-    final res = await complaintsRepo.sendMsgComplaints(msgController.text,rideId);
+    final res =
+        await complaintsRepo.sendMsgComplaints(msgController.text, rideId);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err);
         emit(SendMsgLoading());
       },
-          (res) async {
+      (res) async {
         emit(SendMsgLoaded());
-       CacheHelper.getData(key: 'lang') =='en'?showSnackBar('Message sent successfully') :showSnackBar('تم إرسال الرسالة بنجاح');
+        CacheHelper.getData(key: 'lang') == 'en'
+            ? showSnackBar('Message sent successfully')
+            : showSnackBar('تم إرسال الرسالة بنجاح');
         msgController.clear();
       },
     );
   }
 }
-

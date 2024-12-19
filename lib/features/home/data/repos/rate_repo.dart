@@ -8,16 +8,15 @@ import '../../../../core/utils/end_points.dart';
 import '../../../../core/utils/error_model.dart';
 import '../models/rating_model.dart';
 
-
 class RateRepo {
   Future<Either<String, RateModel>> rate(
-      String msg,double rate, int rideId) async {
+      String msg, double rate, int rideId) async {
     final response = await DioHelper.post(EndPoints.rating, body: {
       'message': msg,
       'rate': rate,
     }, headers: {
       'lang': AppStorage.getLang,
-      'ride':rideId
+      'ride': rideId
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == true) {

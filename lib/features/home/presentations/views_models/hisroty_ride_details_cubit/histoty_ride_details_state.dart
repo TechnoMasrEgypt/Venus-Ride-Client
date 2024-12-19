@@ -7,4 +7,5 @@ abstract class HistotyRideDetailsState extends Equatable {
 }
 
 class HistotyRideDetailsInitial extends HistotyRideDetailsState {}
+
 class HistotyRideDetailsLoading extends HistotyRideDetailsState {}

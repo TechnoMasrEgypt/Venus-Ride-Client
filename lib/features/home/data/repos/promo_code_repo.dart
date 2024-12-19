@@ -9,17 +9,14 @@ import '../../../../core/utils/end_points.dart';
 import '../../../../core/utils/error_model.dart';
 import '../models/promo_code_model.dart';
 
-
 class PromoCodeRepo {
-  Future<Either<String, PromoCodeModel>> promoCode(
-      String coupon) async {
+  Future<Either<String, PromoCodeModel>> promoCode(String coupon) async {
     final response = await DioHelper.post(EndPoints.promoCode, body: {
       'coupon': coupon,
     }, headers: {
       'Accept': 'application/json',
       'lang': AppStorage.getLang,
       'user': CacheHelper.getData(key: 'userId'),
-
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == true) {

@@ -17,16 +17,17 @@ class SupportCubit extends Cubit<SupportState> {
     emit(SendMsgInitial());
     final res = await supportRepo.sendMsgSupport(msgController.text);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err);
         emit(SendMsgLoading());
       },
-          (res) async {
+      (res) async {
         emit(SendMsgLoaded());
-        CacheHelper.getData(key: 'lang') =='en'?showSnackBar('Message sent successfully') :showSnackBar('تم إرسال الرسالة بنجاح');
+        CacheHelper.getData(key: 'lang') == 'en'
+            ? showSnackBar('Message sent successfully')
+            : showSnackBar('تم إرسال الرسالة بنجاح');
         msgController.clear();
       },
     );
   }
 }
-

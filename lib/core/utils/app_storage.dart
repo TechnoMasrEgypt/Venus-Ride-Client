@@ -38,7 +38,8 @@ abstract class AppStorage {
 
   static Future<void> cacheLang(String lang) => _box.write('language', lang);
 
-  static Future<void> cachePasswordUserInfo(String passwoed) => _box.write('password', passwoed);
+  static Future<void> cachePasswordUserInfo(String passwoed) =>
+      _box.write('password', passwoed);
 
   static Future<void> cacheToken(String token) => _box.write('token', token);
 

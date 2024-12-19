@@ -17,7 +17,10 @@ import '../utils/constants.dart';
 //   globalScaffoldKey.currentState!.showSnackBar(snackBar);
 // }
 showSnackBar(String title,
-    {bool popPage = false, duration = 3, Color color = kDeepBlue,EdgeInsetsGeometry? margin}) {
+    {bool popPage = false,
+    duration = 3,
+    Color color = kDeepBlue,
+    EdgeInsetsGeometry? margin}) {
   ScaffoldMessenger.of(MagicRouter.currentContext!).hideCurrentSnackBar();
   ScaffoldMessenger.of(MagicRouter.currentContext!).showSnackBar(
     SnackBar(
@@ -43,15 +46,19 @@ showSnackBar(String title,
   );
   if (popPage) Timer(const Duration(seconds: 5), () => MagicRouter.pop());
 }
+
 showUppearSnackBar(String title,
-    {bool popPage = false, duration = 3, Color color = kDeepBlue,EdgeInsetsGeometry? margin}) {
+    {bool popPage = false,
+    duration = 3,
+    Color color = kDeepBlue,
+    EdgeInsetsGeometry? margin}) {
   ScaffoldMessenger.of(MagicRouter.currentContext!).hideCurrentSnackBar();
   ScaffoldMessenger.of(MagicRouter.currentContext!).showSnackBar(
     SnackBar(
       margin: margin,
       backgroundColor: color,
       behavior: SnackBarBehavior.floating,
-      dismissDirection :DismissDirection.up,
+      dismissDirection: DismissDirection.up,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),

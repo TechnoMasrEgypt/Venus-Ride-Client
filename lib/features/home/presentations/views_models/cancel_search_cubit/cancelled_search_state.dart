@@ -7,5 +7,7 @@ abstract class CancelledSearchState extends Equatable {
 }
 
 class CancelledSearchInitial extends CancelledSearchState {}
+
 class CancelledSearchLoading extends CancelledSearchState {}
+
 class CancelledSearchSuc extends CancelledSearchState {}

@@ -15,10 +15,9 @@ class FaqsRepo {
     try {
       if (response.statusCode == 200) {
         log("Success GetFaqsRepo");
-       // log(response);
+        // log(response);
         return Right(FaqsModel.fromJson(jsonDecode(response.toString())));
       } else {
-       
         return Left(ErrorModel.fromJson(jsonDecode(response.toString()))
             .message
             .toString());

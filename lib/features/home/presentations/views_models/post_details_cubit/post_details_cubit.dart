@@ -60,6 +60,8 @@ class PostDetailsCubit extends Cubit<PostDetailsState> {
         LocaleKeys.noInternetConnectivity.tr(),
       );
     }
+    deleteFirebaseRecord();
+
     emit(PostDetailsLoading());
     final res = await postDetailsRepo.postDetails(
         startRide: startRide,
@@ -96,5 +98,24 @@ class PostDetailsCubit extends Cubit<PostDetailsState> {
         MagicRouter.navigateAndPopAll(const SearchingCarView());
       },
     );
+  }
+
+  void deleteFirebaseRecord() {
+    // Remove all related records
+    listenReceipt.remove().then((_) {}).catchError((error) {});
+
+    listenNotification.remove().then((_) {}).catchError((error) {});
+
+    listenDriverArrived.remove().then((_) {}).catchError((error) {});
+
+    listenDriverCanceled.remove().then((_) {}).catchError((error) {});
+  }
+
+  void setRideData({required int id}) {
+    emit(PostDetailsLoading());
+
+    bookRideModel = Data(
+        id: id, date: DateTime.now(), time: "", startRide: "", endRide: "");
+    emit(PostDetailsLoaded());
   }
 }

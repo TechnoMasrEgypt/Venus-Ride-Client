@@ -13,10 +13,10 @@ class RideHistoryCubit extends Cubit<RideHistoryState> {
 
   static RideHistoryCubit of(context) => BlocProvider.of(context);
 
-  RideHistoryModel? rideHistoryModel ;
-  
-List<RideHistoryData> list = [];
-  Future getRideHistory ()async {
+  RideHistoryModel? rideHistoryModel;
+
+  List<RideHistoryData> list = [];
+  Future getRideHistory() async {
     emit(RideHistoryLoading());
     final res = await rideHistoryRepo.getRideHistory();
     res.fold(

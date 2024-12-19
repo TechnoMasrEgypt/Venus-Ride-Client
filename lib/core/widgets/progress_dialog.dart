@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:taxi/core/widgets/gradient_progress_indicator.dart';
 
-
-
 class ProgressDialog extends StatelessWidget {
   final String status;
 
@@ -34,7 +32,7 @@ class ProgressDialog extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-             GradientCircularProgressIndicator(
+              GradientCircularProgressIndicator(
                 valueGradient: g1,
                 backgroundColor: Colors.grey[200],
               ),

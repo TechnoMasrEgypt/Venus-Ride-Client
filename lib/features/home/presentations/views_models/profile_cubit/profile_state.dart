@@ -12,6 +12,7 @@ class ProfileInitial extends ProfileState {}
 class GetProfileDetailsLoading extends ProfileState {}
 
 class GetProfileDetailsLoaded extends ProfileState {}
+
 class GetProfileDetailChangedimage extends ProfileState {}
 
 class EditProfileDetailsLoading extends ProfileState {}

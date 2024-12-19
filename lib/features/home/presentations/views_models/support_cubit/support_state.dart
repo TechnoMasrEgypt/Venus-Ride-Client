@@ -7,6 +7,7 @@ abstract class SupportState extends Equatable {
 }
 
 class SupportInitial extends SupportState {}
+
 class SendMsgInitial extends SupportState {}
 
 class SendMsgLoaded extends SupportState {}

@@ -7,4 +7,5 @@ abstract class DeleteAccountState extends Equatable {
 }
 
 class DeleteAccountInitial extends DeleteAccountState {}
+
 class DeleteAccountLoading extends DeleteAccountState {}

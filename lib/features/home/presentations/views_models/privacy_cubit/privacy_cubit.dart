@@ -5,7 +5,6 @@ import '../../../data/models/privacy_model.dart';
 import '../../../data/repos/privacy_repo.dart';
 part 'privacy_state.dart';
 
-
 class PrivacyCubit extends Cubit<PrivacyState> {
   PrivacyCubit() : super(PrivacyInitial());
 
@@ -18,17 +17,14 @@ class PrivacyCubit extends Cubit<PrivacyState> {
     emit(PrivacyLoading());
     final res = await privacyRepo.getPrivacy();
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err);
         emit(PrivacyInitial());
       },
-          (res) async {
-            privacyData = res.data;
+      (res) async {
+        privacyData = res.data;
         emit(PrivacyInitial());
       },
     );
   }
-
-
-
 }

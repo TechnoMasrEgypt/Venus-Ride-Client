@@ -7,4 +7,5 @@ abstract class CancelledRideState extends Equatable {
 }
 
 class CancelledRideInitial extends CancelledRideState {}
+
 class CancelledRideLoading extends CancelledRideState {}

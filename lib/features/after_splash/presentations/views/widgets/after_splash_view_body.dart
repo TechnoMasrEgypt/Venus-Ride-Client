@@ -6,8 +6,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:taxi/core/utils/constants.dart';
 import 'package:taxi/core/utils/magic_router.dart';
+import 'package:taxi/core/widgets/custom_loading_idicator.dart';
 import 'package:taxi/features/home/presentations/views/home_view.dart';
 import 'package:taxi/features/home/presentations/views/widgets/bottom_sheets.dart';
+import 'package:taxi/features/home/presentations/views_models/check_ride_cubit/check_ride_cubit.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/app_styles.dart';
 import '../../../../../core/widgets/custom_icon_back.dart';
@@ -42,12 +44,14 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
     currentPosition = position;
+    CheckRideCubit.of(context)..checkRide();
   }
 
   @override
   void initState() {
     getCurrentPosition();
     NotficationCubit.of(context)..sendNotfication();
+
     super.initState();
   }
 
@@ -55,68 +59,76 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
   Widget build(BuildContext context) {
     // final postCubit = PostDetailsCubit.of(context);
     final getDirectionCubit = GetDirectionCubit.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: RefreshIndicator(
-        onRefresh: refreshData,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 40.h, right: 13.w),
-                child: Builder(builder: (context) {
-                  return customIconBack(
-                    icon: Icons.menu,
-                    onTap: () async {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  );
-                }),
-              ),
-              SizedBox(
-                height: 40.h,
-              ),
-              Center(
-                  child: Image.asset(
-                AppAssets.logo,
-                height: 200,
-              )),
-              SizedBox(
-                height: 30.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<CheckRideCubit, CheckRideState>(
+      builder: (context, state) {
+        if (state is StartCheckRide || state is CheckRideInitial) {
+          return LoadingIndicator();
+        }
+        return Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
+          child: RefreshIndicator(
+            onRefresh: refreshData,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ChooseCard(
-                      icon: Icons.location_on,
-                      text: LocaleKeys.setDestination.tr(),
-                      onTap: () {
-                        MagicRouter.navigateTo(const HomeView());
-                      }),
-                  BlocListener<PostDetailsCubit, PostDetailsState>(
-                    listener: (context, state) {},
-                    child: ChooseCard(
-                      icon: Icons.location_off,
-                      text: LocaleKeys.withoutDestination.tr(),
-                      onTap: () {
-                        buildBookRideShowModalBottomSheetWithoutDes(context);
-                        getDirectionCubit.driverArrived();
-                        print(currentPosition);
-                      },
-                    ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 40.h, right: 13.w),
+                    child: Builder(builder: (context) {
+                      return customIconBack(
+                        icon: Icons.menu,
+                        onTap: () async {
+                          Scaffold.of(context).openDrawer();
+                        },
+                      );
+                    }),
                   ),
+                  SizedBox(
+                    height: 40.h,
+                  ),
+                  Center(
+                      child: Image.asset(
+                    AppAssets.logo,
+                    height: 200,
+                  )),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ChooseCard(
+                          icon: Icons.location_on,
+                          text: LocaleKeys.setDestination.tr(),
+                          onTap: () {
+                            MagicRouter.navigateTo(const HomeView());
+                          }),
+                      BlocListener<PostDetailsCubit, PostDetailsState>(
+                        listener: (context, state) {},
+                        child: ChooseCard(
+                          icon: Icons.location_off,
+                          text: LocaleKeys.withoutDestination.tr(),
+                          onTap: () {
+                            buildBookRideShowModalBottomSheetWithoutDes(
+                                context);
+                            getDirectionCubit.driverArrived();
+                            print(currentPosition);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                      height: 350.h,
+                      width: 350.w,
+                      child: Lottie.asset('assets/json/manwaitingcar.json')),
                 ],
               ),
-              SizedBox(
-                  height: 350.h,
-                  width: 350.w,
-                  child: Lottie.asset('assets/json/manwaitingcar.json')),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

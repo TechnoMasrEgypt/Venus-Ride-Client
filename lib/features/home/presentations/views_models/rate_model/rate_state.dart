@@ -7,6 +7,7 @@ abstract class RateState extends Equatable {
 }
 
 class RateInitial extends RateState {}
+
 class SendMsgInitial extends RateState {}
 
 class SendMsgLoaded extends RateState {}

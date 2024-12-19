@@ -102,7 +102,7 @@ abstract class GradientProgressIndicator extends StatefulWidget {
   final String? semanticsValue;
 
   Color _getBackgroundColor(BuildContext context) =>
-      backgroundColor ??Colors.white;
+      backgroundColor ?? Colors.white;
 
   Widget _buildSemanticsWrapper({
     required BuildContext context,
@@ -356,7 +356,7 @@ class _GradientCircularProgressIndicatorPainter extends CustomPainter {
     required this.offsetValue,
     required this.rotationValue,
     required this.strokeWidth,
-  })   : arcStart = value != null
+  })  : arcStart = value != null
             ? _startAngle
             : _startAngle +
                 tailValue * 3 / 2 * math.pi +

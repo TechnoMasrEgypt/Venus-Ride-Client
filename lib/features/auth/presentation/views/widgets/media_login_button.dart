@@ -22,11 +22,8 @@ class SocialButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:  EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-      decoration: BoxDecoration(
-          color: buttonColor,
-          shape: BoxShape.circle
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      decoration: BoxDecoration(color: buttonColor, shape: BoxShape.circle),
       child: InkWell(
         onTap: onPress,
         child: Image.asset(

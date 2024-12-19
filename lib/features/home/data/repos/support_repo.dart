@@ -19,7 +19,6 @@ class SupportRepo {
       'userId': CacheHelper.getData(key: 'userId'),
       'userType': "client",
       'subject': "support",
-
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == 'success') {

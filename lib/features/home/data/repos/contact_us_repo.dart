@@ -42,7 +42,6 @@ class ContactUsRepo {
       'userId': CacheHelper.getData(key: 'userId'),
       'userType': "client",
       'subject': "contact",
-
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == 'success') {

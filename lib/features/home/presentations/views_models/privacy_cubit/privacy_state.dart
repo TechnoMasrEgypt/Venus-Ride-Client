@@ -7,4 +7,5 @@ abstract class PrivacyState extends Equatable {
 }
 
 class PrivacyInitial extends PrivacyState {}
+
 class PrivacyLoading extends PrivacyState {}

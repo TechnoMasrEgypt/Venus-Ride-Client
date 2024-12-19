@@ -65,10 +65,10 @@ class DefaultFirebaseOptions {
     projectId: 'venus-client-62ecc',
     databaseURL: 'https://venus-client-62ecc-default-rtdb.firebaseio.com',
     storageBucket: 'venus-client-62ecc.firebasestorage.app',
-    androidClientId: '1073519462014-crcc32qn23r4dibe6frb9456b8618lh6.apps.googleusercontent.com',
+    androidClientId:
+        '1073519462014-crcc32qn23r4dibe6frb9456b8618lh6.apps.googleusercontent.com',
     iosBundleId: 'com.tech.venusclient',
   );
-
 }
 
 class DefaultFirebaseOptionsCaptin {

@@ -17,64 +17,75 @@ class RideStoryViewBody extends StatelessWidget {
     return BlocBuilder<RideHistoryCubit, RideHistoryState>(
       builder: (context, state) {
         final cubit = RideHistoryCubit.of(context);
-        return state is RideHistoryLoading?const LoadingIndicator()
-        :
-        
-        SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 32.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      customIconBack(
-                          icon: Localizations.localeOf(context).languageCode ==
-                                  'en'
-                              ? Icons.keyboard_arrow_right
-                              : Icons.keyboard_arrow_left,
-                          onTap: () => MagicRouter.pop()),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  cubit.list.isEmpty?  Center(
-        child:SizedBox(
-          height: 250.h,
-          width: 250.w,
-          child: Lottie.asset('assets/json/manwaitingcar.json')),
-        ):
-                  Expanded(
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount:  cubit.list.length,
-                      itemBuilder: (context, index) =>  InkWell(
-                      
-                        onTap: ()=>HistotyRideDetailsCubit.of(context).getHistotyRideDetails( cubit.list[index].id,),
-                        child: RideStoryItem(
-                        date: cubit.list[index].date.toString().split(' ')[0],
-                        startTime: cubit.list[index].startTime!.toString(),
-                        endLocation: cubit.list[index].endRide.toString(),
-                        startLocation: cubit.list[index].startRide.toString(),
-                        endTiem: cubit.list[index].endTime!.toString(),
-                        status: cubit.list[index].status.toString(), 
-                        rideId: cubit.list[index].id,
+        return state is RideHistoryLoading
+            ? const LoadingIndicator()
+            : SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 32.h,
                         ),
-                         
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            customIconBack(
+                                icon: Localizations.localeOf(context)
+                                            .languageCode ==
+                                        'en'
+                                    ? Icons.keyboard_arrow_right
+                                    : Icons.keyboard_arrow_left,
+                                onTap: () => MagicRouter.pop()),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30.h,
+                        ),
+                        cubit.list.isEmpty
+                            ? Center(
+                                child: SizedBox(
+                                    height: 250.h,
+                                    width: 250.w,
+                                    child: Lottie.asset(
+                                        'assets/json/manwaitingcar.json')),
+                              )
+                            : Expanded(
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: cubit.list.length,
+                                  itemBuilder: (context, index) => InkWell(
+                                    onTap: () =>
+                                        HistotyRideDetailsCubit.of(context)
+                                            .getHistotyRideDetails(
+                                      cubit.list[index].id,
+                                    ),
+                                    child: RideStoryItem(
+                                      date: cubit.list[index].date
+                                          .toString()
+                                          .split(' ')[0],
+                                      startTime: cubit.list[index].startTime!
+                                          .toString(),
+                                      endLocation:
+                                          cubit.list[index].endRide.toString(),
+                                      startLocation: cubit.list[index].startRide
+                                          .toString(),
+                                      endTiem:
+                                          cubit.list[index].endTime!.toString(),
+                                      status:
+                                          cubit.list[index].status.toString(),
+                                      rideId: cubit.list[index].id,
+                                    ),
+                                  ),
+                                ),
+                              )
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
+                  ),
+                ),
+              );
       },
     );
   }

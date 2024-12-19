@@ -8,7 +8,6 @@ import '../../../../core/utils/end_points.dart';
 import '../../../../core/utils/error_model.dart';
 import '../models/complaints_model.dart';
 
-
 class ComplaintsRepo {
   Future<Either<String, ComplaintsModel>> sendMsgComplaints(
       String msg, int rideId) async {
@@ -17,9 +16,7 @@ class ComplaintsRepo {
     }, headers: {
       'Accept': 'application/json',
       'lang': AppStorage.getLang,
-      'ride':rideId
-
-
+      'ride': rideId
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == 'success') {

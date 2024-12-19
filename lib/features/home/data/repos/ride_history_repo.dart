@@ -19,8 +19,9 @@ class RideHistoryRepo {
       if (response.statusCode == 200) {
         log("Success RideHistoryRepo");
         print(response);
-        
-        return Right(RideHistoryModel.fromJson(jsonDecode(response.toString())));
+
+        return Right(
+            RideHistoryModel.fromJson(jsonDecode(response.toString())));
       } else {
         return Left(ErrorModel.fromJson(jsonDecode(response.toString()))
             .message

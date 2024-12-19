@@ -23,11 +23,13 @@ class _SplashViewBodyState extends State<SplashViewBody> {
 
   // bool? onBoarding = CacheHelper.getBoolean(key: 'onBoarding') ;
   _goNext() {
-    if (CacheHelper.getData(key: 'login') == true) {
-      // MagicRouter.navigateAndPopAll(const HomeView());
-      MagicRouter.navigateAndPopAll(const AfterSplashView());
-    } else {
-      MagicRouter.navigateAndPopAll(const OnBoardingView());
+    if (context.mounted) {
+      if (CacheHelper.getData(key: 'login') == true) {
+        // MagicRouter.navigateAndPopAll(const HomeView());
+        MagicRouter.navigateAndPopAll(const AfterSplashView());
+      } else {
+        MagicRouter.navigateAndPopAll(const OnBoardingView());
+      }
     }
   }
   //   if(onBoarding != null){

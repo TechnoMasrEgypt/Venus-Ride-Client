@@ -9,7 +9,6 @@ import '../../../data/repos/ride_history_details_repo.dart';
 import '../../views/ride_story_item_details_view.dart';
 part 'histoty_ride_details_state.dart';
 
-
 class HistotyRideDetailsCubit extends Cubit<HistotyRideDetailsState> {
   HistotyRideDetailsCubit() : super(HistotyRideDetailsInitial());
 
@@ -22,41 +21,35 @@ class HistotyRideDetailsCubit extends Cubit<HistotyRideDetailsState> {
     emit(HistotyRideDetailsLoading());
     final res = await historyRideDetailsRepo.getHistoryRideDetails(rideId);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err);
         emit(HistotyRideDetailsInitial());
       },
-          (res) async {
-            histotyRideDetailsData = res.data;
-            log('11111111111111111111111111111111111111');
-            log(histotyRideDetailsData!.driver.name);
-            // log(histotyRideDetailsData!.late);
-            log('11111111111111111111111111111111111111');
-            MagicRouter.navigateTo( RideStoryItemDetailsView(
-              cost: histotyRideDetailsData!.costRide,
-               dis: histotyRideDetailsData!.distance ,
-               time: histotyRideDetailsData!.time.toString(),
-                startTime: histotyRideDetailsData!.startTime,
-                 total: histotyRideDetailsData!.total,
-                  startTAdd: histotyRideDetailsData!.startRide,
-                   type:histotyRideDetailsData!.driver.type,
-                   rate: histotyRideDetailsData!.driver.avgRate.toString(),
-                    photo: histotyRideDetailsData!.driver.photo,
-                     name: histotyRideDetailsData!.driver.name,
-                      fee: histotyRideDetailsData!.fee,
-                       endTime: histotyRideDetailsData!.endTime, 
-                       endAdd: histotyRideDetailsData!.endRide,
-                       late: histotyRideDetailsData!.late,
-                       discount: histotyRideDetailsData!.discount,
-
-
-            )
-            );
+      (res) async {
+        histotyRideDetailsData = res.data;
+        log('11111111111111111111111111111111111111');
+        log(histotyRideDetailsData!.driver.name);
+        // log(histotyRideDetailsData!.late);
+        log('11111111111111111111111111111111111111');
+        MagicRouter.navigateTo(RideStoryItemDetailsView(
+          cost: histotyRideDetailsData!.costRide,
+          dis: histotyRideDetailsData!.distance,
+          time: histotyRideDetailsData!.time.toString(),
+          startTime: histotyRideDetailsData!.startTime,
+          total: histotyRideDetailsData!.total,
+          startTAdd: histotyRideDetailsData!.startRide,
+          type: histotyRideDetailsData!.driver.type,
+          rate: histotyRideDetailsData!.driver.avgRate.toString(),
+          photo: histotyRideDetailsData!.driver.photo,
+          name: histotyRideDetailsData!.driver.name,
+          fee: histotyRideDetailsData!.fee,
+          endTime: histotyRideDetailsData!.endTime,
+          endAdd: histotyRideDetailsData!.endRide,
+          late: histotyRideDetailsData!.late,
+          discount: histotyRideDetailsData!.discount,
+        ));
         emit(HistotyRideDetailsInitial());
       },
     );
   }
-
-
-
 }

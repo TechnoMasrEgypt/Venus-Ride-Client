@@ -5,7 +5,6 @@
 import 'dart:convert';
 import '../../../../core/utils/app_storage.dart';
 
-
 FaqsModel faqsModelFromJson(String str) => FaqsModel.fromJson(json.decode(str));
 
 String faqsModelToJson(FaqsModel data) => json.encode(data.toJson());

@@ -21,15 +21,13 @@ class ResetPassCubit extends Cubit<ResetPassState> {
   bool showPassword = true;
   bool showConPassword = true;
 
-
   Future resetPass() async {
-    var connectivityResult =
-    await (Connectivity().checkConnectivity());
-    if (connectivityResult !=
-        ConnectivityResult.mobile &&
-        connectivityResult !=
-            ConnectivityResult.wifi) {
-      showSnackBar( LocaleKeys.noInternetConnectivity.tr(),);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.mobile &&
+        connectivityResult != ConnectivityResult.wifi) {
+      showSnackBar(
+        LocaleKeys.noInternetConnectivity.tr(),
+      );
     }
     if (passwordController.text.length < 8) {
       showSnackBar(
@@ -37,33 +35,31 @@ class ResetPassCubit extends Cubit<ResetPassState> {
       );
       return;
     }
-    if (passwordController.text !=
-        confirmPasswordController.text) {
+    if (passwordController.text != confirmPasswordController.text) {
       showSnackBar(
         LocaleKeys.PleaseEnterASimilarPassword.tr(),
       );
       return;
     }
     emit(ResetPassLoading());
-    final res =
-    await resetPassRepo.resetPass( passwordController.text,confirmPasswordController.text);
+    final res = await resetPassRepo.resetPass(
+        passwordController.text, confirmPasswordController.text);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(AppStorage.getLang == 'en'
             ? err
             : 'Please check your data again, you have an error in the data');
         emit(ResetPassInitial());
       },
-          (res) async {
+      (res) async {
         emit(ResetPassInitial());
         MagicRouter.navigateAndPopAll(const LoginView());
       },
     );
   }
 
-  void changePasswordVisibility (){
-    showPassword = !showPassword ;
+  void changePasswordVisibility() {
+    showPassword = !showPassword;
     emit(ChangeRegisterPasswordVisibility());
   }
-
 }

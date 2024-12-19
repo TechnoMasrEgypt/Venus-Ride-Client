@@ -4,76 +4,80 @@
 
 import 'dart:convert';
 
-HistotyRideDetailsModel histotyRideDetailsModelFromJson(String str) => HistotyRideDetailsModel.fromJson(json.decode(str));
+HistotyRideDetailsModel histotyRideDetailsModelFromJson(String str) =>
+    HistotyRideDetailsModel.fromJson(json.decode(str));
 
-String histotyRideDetailsModelToJson(HistotyRideDetailsModel data) => json.encode(data.toJson());
+String histotyRideDetailsModelToJson(HistotyRideDetailsModel data) =>
+    json.encode(data.toJson());
 
 class HistotyRideDetailsModel {
-    String status;
-    String message;
-    HistotyRideDetails data;
+  String status;
+  String message;
+  HistotyRideDetails data;
 
-    HistotyRideDetailsModel({
-        required this.status,
-        required this.message,
-        required this.data,
-    });
+  HistotyRideDetailsModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-    factory HistotyRideDetailsModel.fromJson(Map<String, dynamic> json) => HistotyRideDetailsModel(
+  factory HistotyRideDetailsModel.fromJson(Map<String, dynamic> json) =>
+      HistotyRideDetailsModel(
         status: json["status"],
         message: json["message"],
         data: HistotyRideDetails.fromJson(json["data"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": data.toJson(),
-    };
+      };
 }
 
 class HistotyRideDetails {
-    int id;
-    int driverId;
-    dynamic fee;
-    String startRide;
-    String endRide;
-    dynamic cost;
-    dynamic costRide;
-    dynamic late;
-    String startTime;
-    String endTime;
-    String distance;
-    String time;
-    dynamic total;
-    String? discount;
-    Driver driver;
-    DateTime date;
-    dynamic reasonCancelled;
-    dynamic responsible;
+  int id;
+  int driverId;
+  dynamic fee;
+  String startRide;
+  String endRide;
+  dynamic cost;
+  dynamic costRide;
+  dynamic late;
+  String startTime;
+  String endTime;
+  String distance;
+  String time;
+  dynamic total;
+  String? discount;
+  Driver driver;
+  DateTime date;
+  dynamic reasonCancelled;
+  dynamic responsible;
 
-    HistotyRideDetails({
-        required this.id,
-        required this.driverId,
-        required this.fee,
-        required this.startRide,
-        required this.endRide,
-        required this.cost,
-        required this.costRide,
-        required this.late,
-        required this.startTime,
-        required this.endTime,
-        required this.distance,
-        required this.time,
-        required this.total,
-        required this.discount,
-        required this.driver,
-        required this.date,
-        this.reasonCancelled,
-        this.responsible,
-    });
+  HistotyRideDetails({
+    required this.id,
+    required this.driverId,
+    required this.fee,
+    required this.startRide,
+    required this.endRide,
+    required this.cost,
+    required this.costRide,
+    required this.late,
+    required this.startTime,
+    required this.endTime,
+    required this.distance,
+    required this.time,
+    required this.total,
+    required this.discount,
+    required this.driver,
+    required this.date,
+    this.reasonCancelled,
+    this.responsible,
+  });
 
-    factory HistotyRideDetails.fromJson(Map<String, dynamic> json) => HistotyRideDetails(
+  factory HistotyRideDetails.fromJson(Map<String, dynamic> json) =>
+      HistotyRideDetails(
         id: json["id"],
         driverId: json["driverId"],
         fee: json["fee"],
@@ -92,9 +96,9 @@ class HistotyRideDetails {
         date: DateTime.parse(json["date"]),
         reasonCancelled: json["reason_cancelled"],
         responsible: json["responsible"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "driverId": driverId,
         "fee": fee,
@@ -109,34 +113,35 @@ class HistotyRideDetails {
         "Time": time,
         "Total": total,
         "driver": driver.toJson(),
-        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "date":
+            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
         "reason_cancelled": reasonCancelled,
         "responsible": responsible,
-    };
+      };
 }
 
 class Driver {
-    String name;
-    String userName;
-    String phone;
-    String photo;
-    dynamic avgRate;
-    String license;
-    dynamic board;
-    String type;
+  String name;
+  String userName;
+  String phone;
+  String photo;
+  dynamic avgRate;
+  String license;
+  dynamic board;
+  String type;
 
-    Driver({
-        required this.name,
-        required this.userName,
-        required this.phone,
-        required this.photo,
-        required this.avgRate,
-        required this.license,
-        required this.board,
-        required this.type,
-    });
+  Driver({
+    required this.name,
+    required this.userName,
+    required this.phone,
+    required this.photo,
+    required this.avgRate,
+    required this.license,
+    required this.board,
+    required this.type,
+  });
 
-    factory Driver.fromJson(Map<String, dynamic> json) => Driver(
+  factory Driver.fromJson(Map<String, dynamic> json) => Driver(
         name: json["name"],
         userName: json["userName"],
         phone: json["phone"],
@@ -145,9 +150,9 @@ class Driver {
         license: json["license"],
         board: json["board"],
         type: json["type"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "userName": userName,
         "phone": phone,
@@ -156,5 +161,5 @@ class Driver {
         "license": license,
         "board": board,
         "type": type,
-    };
+      };
 }

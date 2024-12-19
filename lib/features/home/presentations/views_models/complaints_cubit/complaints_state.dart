@@ -7,6 +7,7 @@ abstract class ComplaintsState extends Equatable {
 }
 
 class ComplaintsInitial extends ComplaintsState {}
+
 class SendMsgInitial extends ComplaintsState {}
 
 class SendMsgLoaded extends ComplaintsState {}

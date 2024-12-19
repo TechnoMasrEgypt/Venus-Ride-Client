@@ -17,18 +17,19 @@ class DeleteAccountCubit extends Cubit<DeleteAccountState> {
     emit(DeleteAccountLoading());
     final res = await deleteAccount.deleteAccount();
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err);
         emit(DeleteAccountInitial());
       },
-          (res) async {
-             showSnackBar( CacheHelper.getData(key: 'lang') !='en'
-                  ? res.message:'Account was deleted');
-          //  await AppStorage.signOut();
-            CacheHelper.clear();
-            MagicRouter.navigateAndPopAll(const LoginView());
-            showSnackBar(res.message);
-          emit(DeleteAccountInitial());
+      (res) async {
+        showSnackBar(CacheHelper.getData(key: 'lang') != 'en'
+            ? res.message
+            : 'Account was deleted');
+        //  await AppStorage.signOut();
+        CacheHelper.clear();
+        MagicRouter.navigateAndPopAll(const LoginView());
+        showSnackBar(res.message);
+        emit(DeleteAccountInitial());
       },
     );
   }

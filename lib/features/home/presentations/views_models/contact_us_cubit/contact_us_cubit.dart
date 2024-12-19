@@ -42,7 +42,9 @@ class ContactUsCubit extends Cubit<ContactUsState> {
       },
       (res) async {
         emit(SendMsgLoaded());
-        CacheHelper.getData(key: 'lang') =='en'?showSnackBar('Message sent successfully') :showSnackBar('تم إرسال الرسالة بنجاح');
+        CacheHelper.getData(key: 'lang') == 'en'
+            ? showSnackBar('Message sent successfully')
+            : showSnackBar('تم إرسال الرسالة بنجاح');
         msgController.clear();
       },
     );

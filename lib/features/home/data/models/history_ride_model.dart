@@ -4,74 +4,79 @@
 
 import 'dart:convert';
 
-RideHistoryModel rideHistoryModelFromJson(String str) => RideHistoryModel.fromJson(json.decode(str));
+RideHistoryModel rideHistoryModelFromJson(String str) =>
+    RideHistoryModel.fromJson(json.decode(str));
 
-String rideHistoryModelToJson(RideHistoryModel data) => json.encode(data.toJson());
+String rideHistoryModelToJson(RideHistoryModel data) =>
+    json.encode(data.toJson());
 
 class RideHistoryModel {
-    String status;
-    String message;
-    List<RideHistoryData> data;
+  String status;
+  String message;
+  List<RideHistoryData> data;
 
-    RideHistoryModel({
-        required this.status,
-        required this.message,
-        required this.data,
-    });
+  RideHistoryModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
 
-    factory RideHistoryModel.fromJson(Map<String, dynamic> json) => RideHistoryModel(
+  factory RideHistoryModel.fromJson(Map<String, dynamic> json) =>
+      RideHistoryModel(
         status: json["status"],
         message: json["message"],
-        data: List<RideHistoryData>.from(json["data"].map((x) => RideHistoryData.fromJson(x))),
-    );
+        data: List<RideHistoryData>.from(
+            json["data"].map((x) => RideHistoryData.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
-    };
+      };
 }
 
 class RideHistoryData {
-    int id;
-    DateTime date;
-    int? driverId;
-    int clientId;
-    Status status;
-    String startRide;
-    String endRide;
-    double costRide;
-    String? startTime;
-    String? endTime;
-    String time;
-    dynamic responsible;
-    dynamic valueRide;
-    dynamic evaluteId;
-    dynamic reasonCancelled;
-    DateTime createdAt;
-    DateTime updatedAt;
+  int id;
+  DateTime date;
+  int? driverId;
+  int clientId;
+  Status status;
+  String startRide;
+  String endRide;
+  double costRide;
+  String? startTime;
+  String? endTime;
+  String time;
+  dynamic responsible;
+  dynamic valueRide;
+  dynamic evaluteId;
+  dynamic reasonCancelled;
+  DateTime createdAt;
+  DateTime updatedAt;
 
-    RideHistoryData({
-        required this.id,
-        required this.date,
-        this.driverId,
-        required this.clientId,
-        required this.status,
-        required this.startRide,
-        required this.endRide,
-        required this.costRide,
-        this.startTime,
-        this.endTime,
-        required this.time,
-        this.responsible,
-        required this.valueRide,
-        this.evaluteId,
-        this.reasonCancelled,
-        required this.createdAt,
-        required this.updatedAt,
-    });
+  RideHistoryData({
+    required this.id,
+    required this.date,
+    this.driverId,
+    required this.clientId,
+    required this.status,
+    required this.startRide,
+    required this.endRide,
+    required this.costRide,
+    this.startTime,
+    this.endTime,
+    required this.time,
+    this.responsible,
+    required this.valueRide,
+    this.evaluteId,
+    this.reasonCancelled,
+    required this.createdAt,
+    required this.updatedAt,
+  });
 
-    factory RideHistoryData.fromJson(Map<String, dynamic> json) => RideHistoryData(
+  factory RideHistoryData.fromJson(Map<String, dynamic> json) =>
+      RideHistoryData(
         id: json["id"],
         date: DateTime.parse(json["date"]),
         driverId: json["driver_id"],
@@ -89,11 +94,12 @@ class RideHistoryData {
         reasonCancelled: json["reason_cancelled"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
-        "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+        "date":
+            "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
         "driver_id": driverId,
         "client_id": clientId,
         "status": statusValues.reverse[status],
@@ -109,27 +115,27 @@ class RideHistoryData {
         "reason_cancelled": reasonCancelled,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-    };
+      };
 }
 
 enum Status { DONE, CANCELLED, BEIGN, INTHEWAY, PICKUP }
 
 final statusValues = EnumValues({
-    "beign": Status.BEIGN,
-    "cancelled": Status.CANCELLED,
-    "done": Status.DONE,
-    "intheway": Status.INTHEWAY,
-    "pickup": Status.PICKUP
+  "beign": Status.BEIGN,
+  "cancelled": Status.CANCELLED,
+  "done": Status.DONE,
+  "intheway": Status.INTHEWAY,
+  "pickup": Status.PICKUP
 });
 
 class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
 
-    EnumValues(this.map);
+  EnumValues(this.map);
 
-    Map<T, String> get reverse {
-        reverseMap = map.map((k, v) => MapEntry(v, k));
-        return reverseMap;
-    }
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 // Custom [BlocObserver] that observes all bloc and cubit state changes.

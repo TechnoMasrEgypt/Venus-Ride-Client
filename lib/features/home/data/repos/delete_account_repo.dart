@@ -11,17 +11,16 @@ import '../models/delete_account_model.dart';
 
 class DeleteAccountRepo {
   Future<Either<String, DeleteAccountModel>> deleteAccount() async {
-    final response = await DioHelper.get(EndPoints.deleteAccount,  headers: {
+    final response = await DioHelper.get(EndPoints.deleteAccount, headers: {
       'lang': AppStorage.getLang,
-      'client': CacheHelper.getData(key:'userId'),
-
-
+      'client': CacheHelper.getData(key: 'userId'),
     });
     try {
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         print("Success LoginRepo");
         print(response);
-        return Right(DeleteAccountModel.fromJson(jsonDecode(response.toString())));
+        return Right(
+            DeleteAccountModel.fromJson(jsonDecode(response.toString())));
       } else {
         print(response);
         return Left(ErrorModel.fromJson(jsonDecode(response.toString()))

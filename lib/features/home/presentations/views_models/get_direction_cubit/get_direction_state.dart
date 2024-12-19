@@ -59,5 +59,5 @@ final class PolyLoading extends GetDirectionState {
 
 final class TestNull extends GetDirectionState {
   const TestNull() : super("No State");
-}// class GetDirectionGetRequest extends GetDirectionState {}
+} // class GetDirectionGetRequest extends GetDirectionState {}
 // class GetDirectionDoneRequest extends GetDirectionState {}

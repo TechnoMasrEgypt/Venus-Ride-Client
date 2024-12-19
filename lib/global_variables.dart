@@ -1,4 +1,4 @@
- import 'dart:async';
+import 'dart:async';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';

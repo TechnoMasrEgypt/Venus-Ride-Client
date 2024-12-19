@@ -52,10 +52,9 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   void codeSent(String verificationId, int? resendToken) {
     log('codeSent');
     log(verificationId);
-    
 
-   CacheHelper.saveData(key: 'receivedID', value: verificationId);
-   //receivedID = verificationId;
+    CacheHelper.saveData(key: 'receivedID', value: verificationId);
+    //receivedID = verificationId;
     MagicRouter.navigateTo(const VerifyCodeView());
 
     emit(PhoneNumberSubmited());
@@ -68,7 +67,8 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   Future<void> submitOTP(String otpCode) async {
     log(otpCode);
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: CacheHelper.getData(key: 'receivedID'), smsCode: otpCode);
+        verificationId: CacheHelper.getData(key: 'receivedID'),
+        smsCode: otpCode);
 
     await signIn(credential);
   }
@@ -157,7 +157,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
         await CacheHelper.saveData(key: 'id', value: res.data.id);
         await CacheHelper.saveData(key: 'name', value: res.data.name);
         await CacheHelper.saveData(key: 'photo', value: res.data.photo);
-       // await CacheHelper.saveData(key: 'email', value: res.data.email);
+        // await CacheHelper.saveData(key: 'email', value: res.data.email);
         await CacheHelper.saveData(key: 'lang', value: res.data.language);
 
         CacheHelper.saveData(key: 'lang', value: 'en');

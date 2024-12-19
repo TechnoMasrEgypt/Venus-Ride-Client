@@ -9,7 +9,7 @@ class PrivacyPolicyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: BlocProvider(
         create: (context) => PrivacyCubit()..getPrivacy(),
         child: const PrivacyPolicyViewBody(),
@@ -17,4 +17,3 @@ class PrivacyPolicyView extends StatelessWidget {
     );
   }
 }
-

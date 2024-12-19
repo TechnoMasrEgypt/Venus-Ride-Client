@@ -17,22 +17,21 @@ class CancelledRideCubit extends Cubit<CancelledRideState> {
   final cancelRideRepo = CancelledRideRepo();
   Future cancelRide({required String reason, required int rideId}) async {
     emit(CancelledRideInitial());
-    final res = await cancelRideRepo.cancelRide( reason:reason ,rideId:rideId );
+    final res = await cancelRideRepo.cancelRide(reason: reason, rideId: rideId);
     res.fold(
-          (err) {
+      (err) {
         showSnackBar(err.toString());
         log('error');
         emit(CancelledRideLoading());
-       
-          },
-          (res) async {
-            //showSnackBar(res.message.message);
-           showSnackBar( CacheHelper.getData(key: 'lang') !='en'
-                  ? res.data.message:'Ride is cancelled');
+      },
+      (res) async {
+        //showSnackBar(res.message.message);
+        showSnackBar(CacheHelper.getData(key: 'lang') != 'en'
+            ? res.data.message
+            : 'Ride is cancelled');
         emit(CancelledRideInitial());
         log('sucess Cancelled');
         MagicRouter.navigateAndPopAll(const AfterSplashView());
-
       },
     );
   }

@@ -12,8 +12,8 @@ class ForgetPassView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PhoneAuthCubit(),
-      child:
-          const Scaffold(backgroundColor: Colors.white, body: ForgetPassViewBody()),
+      child: const Scaffold(
+          backgroundColor: Colors.white, body: ForgetPassViewBody()),
     );
   }
 }

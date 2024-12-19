@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+
 class NetworkConnectivity {
   NetworkConnectivity._();
   static final _instance = NetworkConnectivity._();
@@ -17,6 +18,7 @@ class NetworkConnectivity {
       _checkStatus(result);
     });
   }
+
 // 2.
   void _checkStatus(ConnectivityResult result) async {
     bool isOnline = false;
@@ -28,5 +30,6 @@ class NetworkConnectivity {
     }
     _controller.sink.add({result: isOnline});
   }
+
   void disposeStream() => _controller.close();
 }

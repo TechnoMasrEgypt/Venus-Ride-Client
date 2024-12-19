@@ -7,6 +7,7 @@ abstract class ResetPassState extends Equatable {
 }
 
 class ResetPassInitial extends ResetPassState {}
-class ResetPassLoading extends ResetPassState {}
-class ChangeRegisterPasswordVisibility extends ResetPassState {}
 
+class ResetPassLoading extends ResetPassState {}
+
+class ChangeRegisterPasswordVisibility extends ResetPassState {}

@@ -37,7 +37,8 @@ class TrackerMapView extends StatefulWidget {
       required this.type,
       required this.iDdriver,
       this.late,
-      required this.ride
+      required this.ride,
+      this.status = "beign"
       // ,required this.lat,
       // required this.lng
       });
@@ -49,6 +50,7 @@ class TrackerMapView extends StatefulWidget {
   final String photo;
   final int rate;
   final String type;
+  final String status;
   final String iDdriver;
   final dynamic late;
   final int ride;
@@ -76,9 +78,19 @@ class _TrackerMapViewState extends State<TrackerMapView> {
       ..setCustomMarker()
       ..getCurrentPositionUpdate()
       ..getReceipt()
-      ..getarrived()
       ..drivercancelled(context)
       ..getDriverLocation();
+
+    if (widget.status == "beign") {
+      GetDirectionCubit.of(context).driverArrived();
+      GetDirectionCubit.of(context).getarrived();
+    } else if (widget.status == "intheway") {
+      GetDirectionCubit.of(context).changetravelstate("بدأت الرحله");
+    } else if (widget.status == "pickup") {
+      GetDirectionCubit.of(context).getarrived();
+
+      GetDirectionCubit.of(context).changetravelstate("وصل الكابتين");
+    }
     // GetDirectionCubit.of(context).getRequest();
     // GetDirectionCubit.of(context).getDriverData();
     // GetDirectionCubit.of(context).getReceipt();

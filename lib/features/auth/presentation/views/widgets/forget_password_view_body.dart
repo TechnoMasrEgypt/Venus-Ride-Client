@@ -10,7 +10,6 @@ import 'package:taxi/features/auth/presentation/views_models/phone_auth/phone_au
 import 'package:taxi/global_variables.dart';
 import 'package:taxi/translations/locale_keys.g.dart';
 
-
 class ForgetPassViewBody extends StatefulWidget {
   const ForgetPassViewBody({super.key});
 
@@ -88,9 +87,9 @@ class _ForgetPassViewBodyState extends State<ForgetPassViewBody> {
                                         status: 'Logging you in...'))
                                 : Center(
                                     child: customAuthButton(
-                                        text: LocaleKeys.confirm.tr(),
-                                        onTap: cubit.phoneAuth,
-                                        ),
+                                      text: LocaleKeys.confirm.tr(),
+                                      onTap: cubit.phoneAuth,
+                                    ),
                                   );
                           },
                         )

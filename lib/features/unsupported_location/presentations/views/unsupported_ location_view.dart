@@ -9,11 +9,9 @@ class UnsupportedLocationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-          drawer: customDrawer(context),
-          body: const UnsupportedLocationViewBody(),
-
+        drawer: customDrawer(context),
+        body: const UnsupportedLocationViewBody(),
       ),
     );
-
   }
 }

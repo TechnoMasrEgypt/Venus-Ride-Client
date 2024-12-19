@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Route<dynamic>? onGenerateRoute(RouteSettings settings) => null;
+
 class MagicRouter {
   static BuildContext? currentContext = navigatorKey.currentContext;
   static Future<dynamic> navigateTo(Widget page) =>
@@ -9,7 +11,7 @@ class MagicRouter {
   static Future<dynamic> navigateAndPopAll(Widget page) =>
       navigatorKey.currentState!.pushAndRemoveUntil(
         _materialPageRoute(page),
-            (_) => false,
+        (_) => false,
       );
   static Future<dynamic> navigateAndPopUntilFirstPage(Widget page) =>
       navigatorKey.currentState!.pushAndRemoveUntil(

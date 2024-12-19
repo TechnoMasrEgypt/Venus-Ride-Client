@@ -7,12 +7,12 @@ import '../../../../core/utils/dio_helper.dart';
 import '../../../../core/utils/error_model.dart';
 import '../models/get_driver_model.dart';
 
-
 class GetDriverRepo {
-  Future<Either<String, GetDriverModel>> getDriverDetailsRepo(int rideId) async {
+  Future<Either<String, GetDriverModel>> getDriverDetailsRepo(
+      int rideId) async {
     final response = await DioHelper.get(EndPoints.getDriver, headers: {
-      'Accept':'application/json',
-      'lang':AppStorage.getLang,
+      'Accept': 'application/json',
+      'lang': AppStorage.getLang,
       'ride': rideId,
     });
     try {

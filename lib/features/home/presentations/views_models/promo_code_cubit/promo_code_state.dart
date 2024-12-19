@@ -7,6 +7,7 @@ abstract class PromoCodeState extends Equatable {
 }
 
 class PromoCodeInitial extends PromoCodeState {}
+
 class SendMsgInitial extends PromoCodeState {}
 
 class SendMPromoLoaded extends PromoCodeState {}

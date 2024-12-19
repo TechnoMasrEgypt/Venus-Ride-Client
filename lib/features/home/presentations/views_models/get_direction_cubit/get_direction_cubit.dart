@@ -26,7 +26,7 @@ import '../../views/widgets/bottom_sheets.dart';
 part 'get_direction_state.dart';
 
 class GetDirectionCubit extends Cubit<GetDirectionState> {
-  GetDirectionCubit() : super(GetDirectionInitial());
+  GetDirectionCubit() : super(GetDirectionInitial()) {}
 
   static GetDirectionCubit of(context) => BlocProvider.of(context);
   DirectionDetails? directionDetails;
@@ -364,7 +364,6 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   void changetravelstate(String temp) {
     emit(GetDirectionFinish(temp));
 
-
     emit(GetDirectionFinish2(temp));
   }
 
@@ -390,8 +389,8 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
     });
   }
 }
- 
- // DatabaseReference listenReceipt = FirebaseDatabase.instance.ref();
+
+// DatabaseReference listenReceipt = FirebaseDatabase.instance.ref();
 // void getReceipt()async{
 //    emit(GetDirectionGetRequest());
 //     final snapShot =await  listenReceipt.child("Notifications/Rides/${CacheHelper.getData(key:'userId')}").get();
@@ -431,5 +430,5 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
 //      listenReceipt.remove();
 //     }else
 //     {print('error');
-//     }  
+//     }
 //   }

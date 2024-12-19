@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-DeleteAccountModel deleteAccountModelFromJson(String str) => DeleteAccountModel.fromJson(json.decode(str));
+DeleteAccountModel deleteAccountModelFromJson(String str) =>
+    DeleteAccountModel.fromJson(json.decode(str));
 
-String deleteAccountModelToJson(DeleteAccountModel data) => json.encode(data.toJson());
+String deleteAccountModelToJson(DeleteAccountModel data) =>
+    json.encode(data.toJson());
 
 class DeleteAccountModel {
   DeleteAccountModel({
@@ -19,15 +21,16 @@ class DeleteAccountModel {
   String message;
   List<dynamic> data;
 
-  factory DeleteAccountModel.fromJson(Map<String, dynamic> json) => DeleteAccountModel(
-    status: json["status"],
-    message: json["message"],
-    data: List<dynamic>.from(json["data"].map((x) => x)),
-  );
+  factory DeleteAccountModel.fromJson(Map<String, dynamic> json) =>
+      DeleteAccountModel(
+        status: json["status"],
+        message: json["message"],
+        data: List<dynamic>.from(json["data"].map((x) => x)),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": List<dynamic>.from(data.map((x) => x)),
-  };
+        "status": status,
+        "message": message,
+        "data": List<dynamic>.from(data.map((x) => x)),
+      };
 }

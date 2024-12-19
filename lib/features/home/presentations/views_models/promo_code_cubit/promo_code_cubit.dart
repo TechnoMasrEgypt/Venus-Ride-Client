@@ -20,25 +20,25 @@ class PromoCodeCubit extends Cubit<PromoCodeState> {
     emit(SendMsgInitial());
     final res = await promoCodeRepo.promoCode(couponController.text);
     res.fold(
-          (err) {
-        showSnackBar(err.toString(),margin: EdgeInsets.only(bottom: 500.h,left: 25.w,right: 25.w));
+      (err) {
+        showSnackBar(err.toString(),
+            margin: EdgeInsets.only(bottom: 500.h, left: 25.w, right: 25.w));
         emit(SendMsgLoading());
       },
-          (res) async {
+      (res) async {
         emit(SendMPromoLoaded());
-         promoCodeModel = res;
+        promoCodeModel = res;
         log('promo Code');
         log('${res.coupon.id}');
         log(res.coupon.value);
-       log('${promoCodeModel!.status}');
+        log('${promoCodeModel!.status}');
         log('promo Code');
-       
-       
-        showSnackBar(res.message,margin: EdgeInsets.only(bottom: 500.h,left: 25.w,right: 25.w));
-       // CacheHelper.getData(key: 'lang') =='en'?showSnackBar('Message sent successfully') :showSnackBar('تم إرسال الرسالة بنجاح');
+
+        showSnackBar(res.message,
+            margin: EdgeInsets.only(bottom: 500.h, left: 25.w, right: 25.w));
+        // CacheHelper.getData(key: 'lang') =='en'?showSnackBar('Message sent successfully') :showSnackBar('تم إرسال الرسالة بنجاح');
         couponController.clear();
       },
     );
   }
 }
-

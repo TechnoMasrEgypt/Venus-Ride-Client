@@ -11,8 +11,7 @@ class EditProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>   ProfileCubit()
-        ..getProfileDetails(),
+      create: (context) => ProfileCubit()..getProfileDetails(),
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
         body: BlocBuilder<ProfileCubit, ProfileState>(
