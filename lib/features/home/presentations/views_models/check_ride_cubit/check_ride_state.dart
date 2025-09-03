@@ -8,6 +8,14 @@ final class CheckRideInitial extends CheckRideState {}
 
 final class StartCheckRide extends CheckRideState {}
 
-final class ErrorCheckRide extends CheckRideState {}
+final class ErrorCheckRide extends CheckRideState {
+  final String message;
 
-final class CheckRideSuccess extends CheckRideState {}
+  ErrorCheckRide({required this.message});
+}
+
+final class CheckRideSuccess extends CheckRideState {
+  final String message;
+
+  CheckRideSuccess({required this.message});
+}

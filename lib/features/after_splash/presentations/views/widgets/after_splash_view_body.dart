@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart';
 import 'package:taxi/core/utils/constants.dart';
@@ -61,8 +62,23 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
     final getDirectionCubit = GetDirectionCubit.of(context);
     return BlocBuilder<CheckRideCubit, CheckRideState>(
       builder: (context, state) {
-        if (state is StartCheckRide || state is CheckRideInitial) {
+        if (state is StartCheckRide ) {
           return LoadingIndicator();
+        }else if(state is ErrorCheckRide){
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              children: [
+                SvgPicture.asset('assets/images/warning.svg',
+                  alignment: Alignment.center,
+                  fit: BoxFit.cover,),
+                SizedBox(height: 100,),
+                Text(state.message,style: FontStyles.textStyle13
+                    .copyWith(color: Colors.black),)
+              ],
+            ),
+          );
         }
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),

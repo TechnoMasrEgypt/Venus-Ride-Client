@@ -11,11 +11,11 @@ class NetworkConnectivity {
   Stream get myStream => _controller.stream;
   // 1.
   void initialise() async {
-    ConnectivityResult result = await _networkConnectivity.checkConnectivity();
-    _checkStatus(result);
+    List<ConnectivityResult> result = await _networkConnectivity.checkConnectivity();
+    _checkStatus(result as ConnectivityResult);
     _networkConnectivity.onConnectivityChanged.listen((result) {
       print(result);
-      _checkStatus(result);
+      _checkStatus(result as ConnectivityResult);
     });
   }
 

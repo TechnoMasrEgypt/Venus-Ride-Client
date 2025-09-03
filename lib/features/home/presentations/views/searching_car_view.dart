@@ -26,6 +26,10 @@ class _SearchingCarViewState extends State<SearchingCarView> {
     super.initState();
     GetDirectionCubit.of(context).getRequest();
   }
+  ondispose() {
+    super.dispose();
+    GetDirectionCubit.of(context).cancelRequest();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +42,8 @@ class _SearchingCarViewState extends State<SearchingCarView> {
           children: [
             AvatarGlow(
               glowColor: Colors.grey,
-              endRadius: 120,
               duration: const Duration(milliseconds: 2000),
               repeat: true,
-              showTwoGlows: true,
               curve: Curves.easeOutQuad,
               child: Container(
                   height: 80.w,

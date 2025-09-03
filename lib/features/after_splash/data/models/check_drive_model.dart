@@ -8,6 +8,7 @@ class CheckDriveDetails {
   final int ride;
   final String type;
   final String status;
+  String? message;
 
   CheckDriveDetails({
     required this.driverId,
@@ -19,6 +20,7 @@ class CheckDriveDetails {
     required this.ride,
     required this.type,
     required this.status,
+    this.message
   });
 
   // Factory constructor for creating a new instance from JSON
@@ -33,6 +35,7 @@ class CheckDriveDetails {
       ride: json['ride'],
       type: json['type'],
       status: json['status'],
+      message: json['message'].toString()
     );
   }
 
@@ -48,6 +51,7 @@ class CheckDriveDetails {
       'ride': ride,
       'type': type,
       'status': status,
+      'message' :message
     };
   }
 }

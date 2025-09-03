@@ -2,13 +2,12 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart' as prefix;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:taxi/core/utils/constants.dart';
 import 'package:taxi/core/utils/app_styles.dart';
 import 'package:taxi/core/widgets/custom_button.dart';
@@ -16,6 +15,9 @@ import '../../../../../../core/widgets/custom_icon_back.dart';
 import '../../../../../../global_variables.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/custom_snackbar.dart';
+import '../../../../../core/widgets/google_maps_web_service/directions.dart' as show;
+import '../../../../../core/widgets/google_maps_web_service/src/core.dart' show Component;
+import '../../../../../core/widgets/google_maps_web_service/src/places.dart';
 import '../../../../../translations/locale_keys.g.dart';
 import '../../../../home/presentations/views/widgets/bottom_sheets.dart';
 import '../../../../home/presentations/views_models/get_direction_cubit/get_direction_cubit.dart';
@@ -72,11 +74,13 @@ class _UnsupportedLocationViewBodyState
   List<LatLng> polylineCoordinates = [];
 
   void getPolyPoints() async {
-    PolylinePoints polylinePoints = PolylinePoints();
+    PolylinePoints polylinePoints = PolylinePoints(apiKey: mapKey);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      mapKey, // Your Google Map Key
-      PointLatLng(currentPosition.latitude, currentPosition.longitude),
-      PointLatLng(destinationPosition.latitude, destinationPosition.longitude),
+      request: PolylineRequest(origin: PointLatLng(currentPosition.latitude, currentPosition.longitude)
+          , destination: PointLatLng(destinationPosition.latitude,
+              destinationPosition.longitude),
+          mode: TravelMode.driving)// Your Google Map Key
+      ,
     );
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
@@ -185,13 +189,13 @@ class _UnsupportedLocationViewBodyState
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () async {
-                    var place = await PlacesAutocomplete.show(
+                    var place = await prefix.PlacesAutocomplete.show(
                         context: context,
                         apiKey: mapKey,
-                        mode: Mode.overlay,
+                        mode: prefix.Mode.overlay,
                         types: [],
                         strictbounds: false,
-                        components: [Component(Component.country, 'JO')],
+                        components: [],
                         //google_map_webservice package
                         onError: (err) {
                           debugPrint(err.toString());

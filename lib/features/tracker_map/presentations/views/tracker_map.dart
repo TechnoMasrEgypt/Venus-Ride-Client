@@ -1,5 +1,5 @@
-// ignore_for_file: use_build_context_synchronously, await_only_futures, deprecated_member_use
-import 'package:assets_audio_player/assets_audio_player.dart';
+// ignore_for_file: use_build_context_synchronously, await_only_futu
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:taxi/core/utils/constants.dart';
+import 'package:taxi/core/widgets/assets_audio_player/src/playable.dart';
 import 'package:taxi/core/widgets/custom_loading_idicator.dart';
 import 'package:taxi/features/chat/presentations/views/chat_view.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';

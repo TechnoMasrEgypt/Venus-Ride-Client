@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:taxi/core/widgets/wakelock/wackelock.dart';
 import 'package:taxi/features/home/presentations/views_models/Check_ride_cubit/check_ride_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/notfication_cubit/cubit/notfication_cubit.dart';
@@ -14,7 +16,6 @@ import 'package:taxi/features/home/presentations/views_models/post_details_cubit
 import 'package:taxi/features/splash/presentation/views/splash_view.dart';
 import 'package:taxi/firebase_options.dart';
 import 'package:taxi/translations/codegen_loader.g.dart';
-import 'package:wakelock/wakelock.dart';
 import 'core/utils/bloc_observer.dart';
 import 'core/utils/cache_helper.dart';
 import 'core/utils/constants.dart';
@@ -60,7 +61,8 @@ void main() async {
   log('User granted permission: ${settings.authorizationStatus}');
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
-    'High Importance Notifications', // title
+    'High Importance Notifications',
+    bypassDnd: true,// title
     // description
     importance: Importance.max,
   );
@@ -85,10 +87,14 @@ void main() async {
             android: AndroidNotificationDetails(
               'channel id',
               'channel name',
+              ongoing: true,
+              visibility: NotificationVisibility.public,
+              showWhen: true,
+              enableLights: true,
+              channelBypassDnd: true,
               channelDescription: 'channel description',
               priority: Priority.high,
               importance: Importance.high,
-              fullScreenIntent: true,
               icon: '@mipmap/ic_launcher',
             ),
             iOS: DarwinNotificationDetails(),
@@ -100,7 +106,9 @@ void main() async {
       assetLoader: const CodegenLoader(),
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: const Taxi()));
+      child: DevicePreview(
+          enabled: false,
+          builder: (_)=>Taxi())));
   Bloc.observer = AppBlocObserver();
   await CacheHelper.init();
 }

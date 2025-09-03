@@ -18,9 +18,21 @@ class ChatView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(driverName),
+        title: Text(
+          driverName,
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         backgroundColor: kDeepBlue,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SafeArea(
           child: BlocProvider(

@@ -143,6 +143,10 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
     }
   }
 
+  void cancelRequest() {
+    listenNotificationSubscription?.cancel();
+  }
+
 //////////
   void getRequest() async {
     listenNotificationSubscription =
@@ -253,9 +257,9 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
             accuracy: double.parse(accuracy),
             altitude: double.parse(altitude),
             heading: double.parse(heading),
+            timestamp: DateTime.timestamp(),
             speed: double.parse(speed),
             speedAccuracy: double.parse(speedAccuracy),
-            timestamp: null,
             altitudeAccuracy: 0,
             headingAccuracy: 0);
         GoogleMapController googleMapController = await controllerx.future;

@@ -26,11 +26,11 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future login() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.mobile &&
+    if (connectivityResult != ConnectivityResult.mobile ||
         connectivityResult != ConnectivityResult.wifi) {
-      showSnackBar(
+     /* showSnackBar(
         LocaleKeys.noInternetConnectivity.tr(),
-      );
+      );*/
     }
 
     if (emailController.text.length < 10) {

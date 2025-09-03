@@ -1,26 +1,30 @@
+
+
 import 'dart:async';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:taxi/core/utils/constants.dart';
-import 'package:taxi/core/widgets/custom_button.dart';
-import 'package:taxi/features/home/presentations/views_models/get_direction_cubit/get_direction_cubit.dart';
+
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/cache_helper.dart';
+import '../../../../../core/utils/constants.dart';
+import '../../../../../core/widgets/custom_button.dart';
 import '../../../../../core/widgets/custom_icon_back.dart';
 import '../../../../../core/widgets/custom_snackbar.dart';
-import '../../../data/models/direction_details_model.dart';
+import '../../../../../core/widgets/google_maps_web_service/src/places.dart';
 import '../../../../../global_variables.dart';
 import '../../../../../translations/locale_keys.g.dart';
+import '../../../data/models/direction_details_model.dart';
+import '../../views_models/get_direction_cubit/get_direction_cubit.dart';
 import 'bottom_sheets.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
-import 'package:google_api_headers/google_api_headers.dart';
-import 'package:google_maps_webservice/places.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -62,11 +66,13 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   List<LatLng> polylineCoordinates = [];
 
   void getPolyPoints() async {
-    PolylinePoints polylinePoints = PolylinePoints();
+    PolylinePoints polylinePoints = PolylinePoints(apiKey: mapKey);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      mapKey, // Your Google Map Key
-      PointLatLng(currentPosition.latitude, currentPosition.longitude),
-      PointLatLng(destinationPosition.latitude, destinationPosition.longitude),
+      request: PolylineRequest(origin: PointLatLng(currentPosition.latitude, currentPosition.longitude)
+          , destination: PointLatLng(destinationPosition.latitude,
+              destinationPosition.longitude),
+        mode: TravelMode.driving)// Your Google Map Key
+      ,
     );
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
@@ -165,7 +171,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                     mode: Mode.overlay,
                     types: [],
                     strictbounds: false,
-                    components: [Component(Component.country, 'JO')],
+                    components: [],
                     //google_map_webservice package
                     onError: (err) {
                       debugPrint(err.toString());

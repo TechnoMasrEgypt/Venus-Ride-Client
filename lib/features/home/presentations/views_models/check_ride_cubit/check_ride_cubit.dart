@@ -6,6 +6,8 @@ import 'package:taxi/features/home/presentations/views/searching_car_view.dart';
 import 'package:taxi/features/home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
 import 'package:taxi/features/tracker_map/presentations/views/tracker_map.dart';
 
+import '../../../../../core/widgets/custom_snackbar.dart';
+
 part 'check_ride_state.dart';
 
 class CheckRideCubit extends Cubit<CheckRideState> {
@@ -25,13 +27,15 @@ class CheckRideCubit extends Cubit<CheckRideState> {
           PostDetailsCubit.of(MagicRouter.currentContext)
               .setRideData(id: err.rideId!);
         }
+        showSnackBar(err.message);
         //
 
-        emit(ErrorCheckRide());
+        emit(ErrorCheckRide(message: err.message));
       },
       (res) async {
-        PostDetailsCubit.of(MagicRouter.currentContext)
-            .setRideData(id: res.ride);
+
+        PostDetailsCubit.of(MagicRouter.currentContext).setRideData(id: res.ride);
+
         MagicRouter.navigateAndPopAll(TrackerMapView(
           board: res.board,
           driver: res.driver,
@@ -42,9 +46,11 @@ class CheckRideCubit extends Cubit<CheckRideState> {
           iDdriver: res.driverId,
           ride: res.ride,
           status: res.status,
-        ));
 
-        emit(CheckRideSuccess());
+        ));
+        showSnackBar(res.message!);
+
+        emit(CheckRideSuccess(message: res.message!));
       },
     );
   }

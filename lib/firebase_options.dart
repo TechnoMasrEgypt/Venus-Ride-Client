@@ -61,6 +61,7 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAum2CPx7UAo9ptdGKln6tEnFQBelnNbQk',
     appId: '1:1073519462014:ios:f5d134fe39534a1bcd3a2f',
+
     messagingSenderId: '1073519462014',
     projectId: 'venus-client-62ecc',
     databaseURL: 'https://venus-client-62ecc-default-rtdb.firebaseio.com',
