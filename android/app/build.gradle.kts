@@ -19,7 +19,7 @@ keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 android {
     namespace = "com.technomasr.venusrideclient"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.0.12674087"
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -41,7 +41,25 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+        }
+
+        // ✅ External Native Build (CMake)
+        externalNativeBuild {
+            cmake {
+                // No cppFlags needed here unless you want to add them
+                // cppFlags += "" <-- Kotlin DSL doesn't support += like Groovy
+            }
+        }
     }
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true

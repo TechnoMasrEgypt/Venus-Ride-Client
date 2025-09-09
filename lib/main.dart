@@ -36,29 +36,19 @@ import 'features/home/presentations/views_models/rate_model/rate_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Wakelock.enable();
-
-  await Firebase.initializeApp(
-    //  name: 'VenusClient',
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
   await Firebase.initializeApp(
     name: 'VenusDriver',
     options: DefaultFirebaseOptionsCaptin.currentPlatform,
   );
+  setupPushNotifications();
+
+
+
+
   await EasyLocalization.ensureInitialized();
   //.....................firebase messaging...............//
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-  log('User granted permission: ${settings.authorizationStatus}');
+
+
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'high_importance_channel', // id
     'High Importance Notifications',
@@ -112,7 +102,36 @@ void main() async {
   Bloc.observer = AppBlocObserver();
   await CacheHelper.init();
 }
+Future<void> setupPushNotifications() async {
 
+
+  // 🔐 Ask for permission
+  NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: true,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+
+    // ⚠️ Wait a moment to let APNs token be registered
+    await Future.delayed(Duration(seconds: 1));
+
+    // 📬 Get the APNs token (iOS only)
+    String? apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    print('📬 APNs Token: $apnsToken');
+
+    // 📲 Now get FCM token
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    print('📲 FCM Token: $fcmToken');
+  } else {
+    print('❌ Permission denied');
+  }
+}
 class Taxi extends StatefulWidget {
   const Taxi({Key? key}) : super(key: key);
 

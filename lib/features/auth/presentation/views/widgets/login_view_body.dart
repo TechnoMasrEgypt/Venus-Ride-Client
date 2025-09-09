@@ -22,6 +22,7 @@ import '../../../../../translations/locale_keys.g.dart';
 import '../../views_models/login_cubit/login_cubit.dart';
 import '../forget_password_view.dart';
 import '../register_view.dart';
+import 'dart:io' show Platform;
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -48,10 +49,23 @@ class _LoginViewBodyState extends State<LoginViewBody> {
   @override
   void initState() {
     getCurrentPosition();
-    FirebaseMessaging.instance
-        .getToken()
-        .then((value) => CacheHelper.saveData(key: 'token', value: value))
-        .toString();
+
+    try{
+      if(Platform.isIOS){
+        FirebaseMessaging.instance
+            .getAPNSToken()
+            .then((value){
+          print(value.toString());
+        });
+      }
+      FirebaseMessaging.instance
+          .getToken()
+          .then((value) => CacheHelper.saveData(key: 'token', value: value))
+          .toString();
+    }catch(e){
+
+    }
+
 
     super.initState();
   }

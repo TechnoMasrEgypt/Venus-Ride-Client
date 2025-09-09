@@ -111,11 +111,16 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     super.initState();
     // GetDirectionCubit.of(context).getRequest();
     // GetDirectionCubit.of(context).getReceipt();
-    setCustomMarker();
-    getCurrentPositionUpdate();
-    DefaultAssetBundle.of(context)
-        .loadString('assets/map/map_theme.json')
-        .then((value) => {mapTheme = value});
+    try{
+      setCustomMarker();
+      getCurrentPositionUpdate();
+      DefaultAssetBundle.of(context)
+          .loadString('assets/map/map_theme.json')
+          .then((value) => {mapTheme = value});
+    }catch(e){
+
+    }
+
   }
 
   @override
@@ -206,11 +211,11 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       position: LatLng(
                           currentPosition.latitude, currentPosition.longitude),
                       infoWindow: const InfoWindow(title: 'Current Position')));
-                  setCustomMarker();
-                  getPolyPoints();
+                 setCustomMarker();
+               getPolyPoints();
                   destinationController.text = detail.result.name;
                   currentLocationController.text = currentLocation;
-                  cubit.getDirectionDetails(
+                 cubit.getDirectionDetails(
                       currentPosition, destinationPosition);
                   setState(() {});
                   mapController.animateCamera(CameraUpdate.newCameraPosition(
