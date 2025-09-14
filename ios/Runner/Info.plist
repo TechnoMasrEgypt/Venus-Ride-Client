@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>com.venusride.background.refresh</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -12,6 +16,10 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
+	<key>NSUserTrackingUsageDescription</key>
+    <string>We use push notifications to keep you updated with important info.</string>
+
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
@@ -40,6 +48,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>GMSApiKey</key>
+	<string>AIzaSyAum2CPx7UAo9ptdGKln6tEnFQBelnNbQk</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -67,10 +77,7 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 		<string>processing</string>
-	</array>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>com.venusride.background.refresh</string>
+		<string>push-to-talk</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -95,7 +102,5 @@
 	<false/>
 	<key>com.apple.security.network.client</key>
 	<true/>
-	<key>GMSApiKey</key>
-    <string>AIzaSyBaj8TdogqYDV8xOtl2HyJT7HO8m1IkcIE</string>
 </dict>
 </plist>

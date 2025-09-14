@@ -13,7 +13,7 @@ import GoogleMaps // ✅ Add this
   ) -> Bool {
 
     FirebaseApp.configure()
-    GMSServices.provideAPIKey("AIzaSyBaj8TdogqYDV8xOtl2HyJT7HO8m1IkcIE")
+    GMSServices.provideAPIKey("AIzaSyAum2CPx7UAo9ptdGKln6tEnFQBelnNbQk")
     UNUserNotificationCenter.current().delegate = self
     Messaging.messaging().delegate = self
 
