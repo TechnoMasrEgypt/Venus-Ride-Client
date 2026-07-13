@@ -12,6 +12,7 @@ abstract class EndPoints {
   static const String faqs = 'settings/faqs';
   static const String contactUS = 'settings/contact/pages';
   static const String privacy = 'settings/static/pages';
+  static const String settings = 'settings';
   static const String sentMsgContactUs = 'settings/send/message';
   static const String sentMsgComplaints = 'settings/send/complaints';
   static const String sentMsgSupport = 'customer/support';

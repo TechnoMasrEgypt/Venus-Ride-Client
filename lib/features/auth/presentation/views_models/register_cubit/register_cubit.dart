@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,13 +144,6 @@ class RegisterCubit extends Cubit<RegisterState> {
   // }
 
   Future register() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.mobile &&
-        connectivityResult != ConnectivityResult.wifi) {
-      showSnackBar(
-        LocaleKeys.noInternetConnectivity.tr(),
-      );
-    }
     if (passwordController.text.length < 8) {
       showSnackBar(
         LocaleKeys.pleaseProvideAValidPasswordShouldGreaterThan8Character.tr(),
@@ -179,8 +171,9 @@ class RegisterCubit extends Cubit<RegisterState> {
 
     res.fold(
       (err) {
+        
         showSnackBar(err);
-        log(err.toString());
+        log('msg:${err.toString()}');
         emit(RegisterError());
       },
       (res) async {

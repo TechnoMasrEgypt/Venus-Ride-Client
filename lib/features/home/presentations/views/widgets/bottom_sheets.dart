@@ -1,16 +1,17 @@
 import 'dart:developer';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:lottie/lottie.dart' hide Marker;
 import 'package:pinput/pinput.dart';
 import 'package:taxi/core/utils/cache_helper.dart';
 import 'package:taxi/core/utils/magic_router.dart';
 import 'package:taxi/core/widgets/custom_text_form.dart';
 import 'package:taxi/features/after_splash/presentations/views/after_splash_view.dart';
+import 'package:taxi/features/home/presentations/views/widgets/location_picker_view.dart';
 import 'package:taxi/features/home/presentations/views/widgets/spinner.dart';
 import 'package:taxi/features/home/presentations/views_models/get_direction_cubit/get_direction_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
@@ -176,7 +177,6 @@ Future<dynamic> buildSearchModalBottomSheet(BuildContext context) {
                                   cursorColor: kDeepBlue,
                                 ),
                                 TextField(
-                                  enabled: false,
                                   controller: destinationController,
                                   decoration: InputDecoration(
                                     hintText: LocaleKeys.destination.tr(),
@@ -211,7 +211,31 @@ Future<dynamic> buildSearchModalBottomSheet(BuildContext context) {
                   ),
                 ),
                 InkWell(
-                    onTap: () => MagicRouter.pop(),
+                    onTap: () async {
+                      final cubit = GetDirectionCubit.of(context);
+
+                      final LatLng? picked = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const LocationPickerView()),
+                      );
+
+                      if (picked != null && currentPosition != null) {
+                        destinationPosition = picked;
+
+                        final result = await cubit.getDirectionDetails(
+                            currentPosition!, destinationPosition);
+
+                        if (result == null) {
+                          showSnackBar(
+                              'Could not calculate route for this location.');
+                          return;
+                        }
+
+                        // MagicRouter.pop(); // close the search bottom sheet
+                        destinationController.text =
+                            'Selected location (${picked.latitude.toStringAsFixed(5)}, ${picked.longitude.toStringAsFixed(5)})';
+                      }
+                    },
                     child: Text(
                       LocaleKeys.showOnMap.tr(),
                       style: FontStyles.textStyle15.copyWith(color: kDeepBlue),
@@ -251,14 +275,6 @@ Future<dynamic> buildSearchModalBottomSheet(BuildContext context) {
                   text: LocaleKeys.confirm.tr(),
                   textColor: kWhite,
                   onPressed: () async {
-                    var connectivityResult =
-                        await (Connectivity().checkConnectivity());
-                    if (connectivityResult != ConnectivityResult.mobile &&
-                        connectivityResult != ConnectivityResult.wifi) {
-                      showSnackBar(
-                        LocaleKeys.noInternetConnectivity.tr(),
-                      );
-                    }
                     if (destinationController.text == '') {
                       /* showSnackBar('Enter the destination please'
                           //   LocaleKeys.noInternetConnectivity.tr(),
@@ -326,9 +342,13 @@ Future<dynamic> buildSearchModalBottomSheet(BuildContext context) {
 
 Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
   final postCubit = PostDetailsCubit.of(context);
+  if (postCubit.settings.isEmpty) {
+  postCubit.getSettings();
+}
+
   final getDirectionCubit = GetDirectionCubit.of(context);
   final promoCodeCubit = PromoCodeCubit.of(context);
-//  TextEditingController controller = TextEditingController();
+ //  TextEditingController controller = TextEditingController();
   return showModalBottomSheet(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -389,14 +409,22 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                               children: [
                                                 promoCodeCubit.promoCodeModel !=
                                                         null
-                                                    ? getDirectionCubit.testNull
+                                                    ? (getDirectionCubit
+                                                                .testNull ||
+                                                            getDirectionCubit
+                                                                    .directionDetails ==
+                                                                null)
                                                         ? Text('')
                                                         : Text(
                                                             "${postCubit.estimateFares(getDirectionCubit.directionDetails!) - ((postCubit.estimateFares(getDirectionCubit.directionDetails!)) * (double.parse(promoCodeCubit.promoCodeModel!.coupon.value) / 100))}",
                                                             style: FontStyles
                                                                 .textStyle15,
                                                           )
-                                                    : getDirectionCubit.testNull
+                                                    : (getDirectionCubit
+                                                                .testNull ||
+                                                            getDirectionCubit
+                                                                    .directionDetails ==
+                                                                null)
                                                         ? Text('')
                                                         : Text(
                                                             "${postCubit.estimateFares(getDirectionCubit.directionDetails!)}",
@@ -423,7 +451,11 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           16)),
-                                              child: getDirectionCubit.testNull
+                                              child: (getDirectionCubit
+                                                          .testNull ||
+                                                      getDirectionCubit
+                                                              .directionDetails ==
+                                                          null)
                                                   ? Text('')
                                                   : Text(
                                                       textAlign:
@@ -514,25 +546,14 @@ Future<dynamic> buildBookRideShowModalBottomSheet(BuildContext context) {
                                       setState(() {
                                         getDirectionCubit.testNull = false;
                                       });
-                                      var connectivityResult =
-                                          await (Connectivity()
-                                              .checkConnectivity());
-                                      if (connectivityResult !=
-                                              ConnectivityResult.mobile &&
-                                          connectivityResult !=
-                                              ConnectivityResult.wifi) {
-                                        showSnackBar(
-                                          LocaleKeys.noInternetConnectivity
-                                              .tr(),
-                                        );
-                                      }
+
                                       postCubit.postData(
                                         startRide: getDirectionCubit
                                             .directionDetails!.startAddress!,
                                         endRide: getDirectionCubit
                                             .directionDetails!.endAddress!,
-                                        currentLat: currentPosition.latitude,
-                                        currentLong: currentPosition.longitude,
+                                        currentLat: currentPosition!.latitude,
+                                        currentLong: currentPosition!.longitude,
                                         dLat: destinationPosition.latitude,
                                         dLong: destinationPosition.longitude,
                                         cost: postCubit.estimateFares(
@@ -680,18 +701,10 @@ Future<dynamic> buildBookRideShowModalBottomSheetWithoutDes(
                         text: LocaleKeys.bookRide.tr(),
                         textColor: kWhite,
                         onPressed: () async {
-                          var connectivityResult =
-                              await (Connectivity().checkConnectivity());
-                          if (connectivityResult != ConnectivityResult.mobile &&
-                              connectivityResult != ConnectivityResult.wifi) {
-                            showSnackBar(
-                              LocaleKeys.noInternetConnectivity.tr(),
-                            );
-                          }
                           postCubit.postData(
                             startRide: 'Current Location',
-                            currentLat: currentPosition.latitude,
-                            currentLong: currentPosition.longitude,
+                            currentLat: currentPosition!.latitude,
+                            currentLong: currentPosition!.longitude,
                             cost: 0,
                             coupunId: promoCodeCubit.promoCodeModel?.coupon.id,
                           );

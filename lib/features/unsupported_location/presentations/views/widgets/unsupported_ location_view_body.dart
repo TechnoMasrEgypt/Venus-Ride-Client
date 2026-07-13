@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart' as prefix;
+import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart'
+    as prefix;
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
@@ -11,12 +11,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:taxi/core/utils/constants.dart';
 import 'package:taxi/core/utils/app_styles.dart';
 import 'package:taxi/core/widgets/custom_button.dart';
+import 'package:taxi/features/home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
 import '../../../../../../core/widgets/custom_icon_back.dart';
 import '../../../../../../global_variables.dart';
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/widgets/custom_snackbar.dart';
-import '../../../../../core/widgets/google_maps_web_service/directions.dart' as show;
-import '../../../../../core/widgets/google_maps_web_service/src/core.dart' show Component;
+import '../../../../../core/widgets/google_maps_web_service/directions.dart'
+    as show;
+import '../../../../../core/widgets/google_maps_web_service/src/core.dart'
+    show Component;
 import '../../../../../core/widgets/google_maps_web_service/src/places.dart';
 import '../../../../../translations/locale_keys.g.dart';
 import '../../../../home/presentations/views/widgets/bottom_sheets.dart';
@@ -76,10 +79,12 @@ class _UnsupportedLocationViewBodyState
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints(apiKey: mapKey);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      request: PolylineRequest(origin: PointLatLng(currentPosition.latitude, currentPosition.longitude)
-          , destination: PointLatLng(destinationPosition.latitude,
-              destinationPosition.longitude),
-          mode: TravelMode.driving)// Your Google Map Key
+      request: PolylineRequest(
+          origin: PointLatLng(
+              currentPosition!.latitude, currentPosition!.longitude),
+          destination: PointLatLng(
+              destinationPosition.latitude, destinationPosition.longitude),
+          mode: TravelMode.driving) // Your Google Map Key
       ,
     );
     if (result.points.isNotEmpty) {
@@ -110,8 +115,8 @@ class _UnsupportedLocationViewBodyState
     googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             zoom: 18,
-            target:
-                LatLng(currentPosition.latitude, currentPosition.longitude))));
+            target: LatLng(
+                currentPosition!.latitude, currentPosition!.longitude))));
   }
   // void getCurrentPositionUpdate() async {
   //   Position position = await Geolocator.getCurrentPosition(
@@ -137,6 +142,7 @@ class _UnsupportedLocationViewBodyState
     super.initState();
     // GetDirectionCubit.of(context).getRequest();
     // GetDirectionCubit.of(context).getReceipt();
+
     setCustomMarker();
     getCurrentPositionUpdate();
     DefaultAssetBundle.of(context)
@@ -230,16 +236,18 @@ class _UnsupportedLocationViewBodyState
                       markersList.add(Marker(
                           icon: sourceIcon,
                           markerId: const MarkerId("currentPosition"),
-                          position: LatLng(currentPosition.latitude,
-                              currentPosition.longitude),
+                          position: LatLng(currentPosition!.latitude,
+                              currentPosition!.longitude),
                           infoWindow:
                               const InfoWindow(title: 'Current Position')));
                       setCustomMarker();
                       getPolyPoints();
                       destinationController.text = detail.result.name;
                       currentLocationController.text = currentLocation;
-                      cubit.getDirectionDetails(
-                          currentPosition, destinationPosition);
+                      if (currentPosition != null) {
+                        cubit.getDirectionDetails(
+                            currentPosition!, destinationPosition);
+                      }
                       setState(() {});
                       // BlocProvider.of<GetDirectionCubit>(context).getDirectionDetails();
                       // print( BlocProvider.of<GetDirectionCubit>(context).directionDetails!.distanceText);
@@ -292,19 +300,17 @@ class _UnsupportedLocationViewBodyState
                     textColor: kWhite,
                     backgroundColor: kDeepBlue,
                     onPressed: () async {
-                      var connectivityResult =
-                          await (Connectivity().checkConnectivity());
-                      if (connectivityResult != ConnectivityResult.mobile &&
-                          connectivityResult != ConnectivityResult.wifi) {
-                        showSnackBar(
-                          LocaleKeys.noInternetConnectivity.tr(),
-                        );
-                      }
                       // ignore: unnecessary_null_comparison
                       if (destinationPosition == null) {
                         showSnackBar('You should select position');
                       }
+                      final postCubit = PostDetailsCubit.of(context);
 
+                      // تحديث الأسعار من السيرفر
+
+                      final success = await postCubit.getSettings();
+
+                      if (!success) return;
                       buildSearchModalBottomSheet(context);
                     }),
               ],

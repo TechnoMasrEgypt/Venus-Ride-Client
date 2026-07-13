@@ -92,6 +92,12 @@ class _TrackerMapViewState extends State<TrackerMapView> {
 
       GetDirectionCubit.of(context).changetravelstate("وصل الكابتين");
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final bookRideId = PostDetailsCubit.of(context).bookRideModel?.id;
+      if (bookRideId != null) {
+        GetDriverCubit.of(context).getDriverDetails(bookRideId);
+      }
+    });
     // GetDirectionCubit.of(context).getRequest();
     // GetDirectionCubit.of(context).getDriverData();
     // GetDirectionCubit.of(context).getReceipt();
@@ -131,9 +137,8 @@ class _TrackerMapViewState extends State<TrackerMapView> {
               ..getDriverLocation(),
           ),*/
           BlocProvider(
-            create: (context) => GetDriverCubit()
-              ..getDriverDetails(
-                  PostDetailsCubit.of(context).bookRideModel!.id),
+            create: (context) =>
+                GetDriverCubit(), // no call here, initState handles it
           ),
           BlocProvider(
               create: (context) =>
@@ -147,11 +152,18 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                   listener: (context, state) {
                     print("omar" + state.toString());
                   },
-                  buildWhen: (previous, current) => true,
+                  buildWhen: (previous, current) =>
+                      current is GetDriverDataLoadingDone ||
+                      current
+                          is DirectionUpdated || // [NEW] ETA/distance refresh
+                      current is GetDirectionFinish ||
+                      current is GetDirectionFinish2 ||
+                      current is GetDriverDataLoad ||
+                      current is GetDirectionDoneRequest,
                   builder: (context, state) {
                     final cubit = GetDirectionCubit.of(context);
                     // final cubitDriverdetails = GetDriverCubit.of(context);
-                    return State is GetDriverDataLoad
+                    return state is GetDriverDataLoad
                         ? LoadingIndicator()
                         : SlidingUpPanel(
                             maxHeight: MediaQuery.of(context).size.height / 2.5,
@@ -168,8 +180,10 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                   padding: EdgeInsets.only(bottom: 125.h),
                                   initialCameraPosition: CameraPosition(
                                     zoom: 13.5,
-                                    target: LatLng(currentPosition.latitude,
-                                        currentPosition.longitude),
+                                    target: currentPosition != null
+                                        ? LatLng(currentPosition!.latitude,
+                                            currentPosition!.longitude)
+                                        : googlePlex.target,
                                   ),
                                   myLocationEnabled: false,
                                   polylines: {
@@ -181,21 +195,25 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                     ),
                                   },
                                   markers: {
-                                    Marker(
-                                      markerId:
-                                          const MarkerId("CurrentPosition"),
-                                      icon: cubit.currentLocationIcon,
-                                      position: LatLng(currentPosition.latitude,
-                                          currentPosition.longitude),
-                                    ),
-                                    Marker(
-                                      rotation: driverLocation.heading,
-                                      markerId: const MarkerId("destination"),
-                                      icon: cubit.destinationIcon,
-                                      // position: LatLng(cubit.latx,cubit.lngx),
-                                      position: LatLng(driverLocation.latitude,
-                                          driverLocation.longitude),
-                                    ),
+                                    if (currentPosition != null)
+                                      Marker(
+                                        markerId:
+                                            const MarkerId("CurrentPosition"),
+                                        icon: cubit.currentLocationIcon,
+                                        position: LatLng(
+                                            currentPosition!.latitude,
+                                            currentPosition!.longitude),
+                                      ),
+                                    if (driverLocation != null)
+                                      Marker(
+                                        rotation: driverLocation!.heading,
+                                        markerId: const MarkerId("destination"),
+                                        icon: cubit.destinationIcon,
+                                        // position: LatLng(cubit.latx,cubit.lngx),
+                                        position: LatLng(
+                                            driverLocation!.latitude,
+                                            driverLocation!.longitude),
+                                      ),
                                   },
                                   myLocationButtonEnabled: true,
                                   mapType: MapType.normal,
@@ -219,6 +237,56 @@ class _TrackerMapViewState extends State<TrackerMapView> {
                                     );
                                   }),
                                 ),
+                                if (cubit.currentDistance.isNotEmpty)
+                                  Positioned(
+                                    top: 40.h,
+                                    left: 13.w,
+                                    child: BlocBuilder<GetDirectionCubit,
+                                        GetDirectionState>(
+                                      buildWhen: (p, c) =>
+                                          c is DirectionUpdated,
+                                      builder: (context, state) {
+                                        final c = GetDirectionCubit.of(context);
+                                        return Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 12.w, vertical: 8.h),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12.r),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                  color: Colors.black26,
+                                                  blurRadius: 6,
+                                                  offset: Offset(0, 2))
+                                            ],
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              _InfoTile(
+                                                icon: Icons.directions_car,
+                                                label: 'Distance',
+                                                value: c.currentDistance,
+                                              ),
+                                              Container(
+                                                width: 1,
+                                                height: 36.h,
+                                                color: Colors.grey[300],
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 10.w),
+                                              ),
+                                              _InfoTile(
+                                                icon: Icons.access_time,
+                                                label: 'ETA',
+                                                value: c.currentDuration,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 SizedBox(
                                   height: 20.h,
                                 ),
@@ -506,6 +574,35 @@ class TravelState extends StatelessWidget {
           style: FontStyles.textStyle18,
         );
       },
+    );
+  }
+}
+
+class _InfoTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _InfoTile({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, color: kDeepBlue, size: 20.r),
+        SizedBox(height: 3.h),
+        Text(label, style: TextStyle(fontSize: 11.sp, color: Colors.grey[600])),
+        Text(value,
+            style: TextStyle(
+                fontSize: 13.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87)),
+      ],
     );
   }
 }

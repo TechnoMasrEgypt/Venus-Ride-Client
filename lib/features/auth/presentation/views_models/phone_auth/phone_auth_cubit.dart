@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -137,13 +136,7 @@ class PhoneAuthCubit extends Cubit<PhoneAuthState> {
   // }
 
   Future phoneAuth() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.mobile &&
-        connectivityResult != ConnectivityResult.wifi) {
-      showSnackBar(
-        LocaleKeys.noInternetConnectivity.tr(),
-      );
-    }
+   
     emit(Loading());
     final res = await phoneAuthRepo.phoneAuth(phoneNumberController.text);
     res.fold(

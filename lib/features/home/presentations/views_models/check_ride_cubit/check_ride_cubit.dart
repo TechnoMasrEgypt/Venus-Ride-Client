@@ -13,12 +13,18 @@ part 'check_ride_state.dart';
 class CheckRideCubit extends Cubit<CheckRideState> {
   CheckRideCubit() : super(CheckRideInitial());
 
-  Future checkRide() async {
+  Future<void> checkRide() async {
     emit(StartCheckRide());
-    if (CacheHelper.getData(key: 'userId') == null) {
-      print("444444444");
+
+    final userId = CacheHelper.getData(key: 'userId');
+    if (userId == null) {
+      // No logged-in user — still need a terminal state, otherwise
+      // anything waiting on this cubit (e.g. splash navigation) hangs
+      // forever in StartCheckRide.
+      emit(ErrorCheckRide(message: 'not_logged_in'));
       return;
     }
+
     final res = await CheckRideRepo.checkInRide();
     res.fold(
       (err) {
@@ -26,15 +32,21 @@ class CheckRideCubit extends Cubit<CheckRideState> {
           MagicRouter.navigateAndPopAll(const SearchingCarView());
           PostDetailsCubit.of(MagicRouter.currentContext)
               .setRideData(id: err.rideId!);
+          emit(CheckRideSuccess(message: err.message));
+          return;
         }
-        showSnackBar(err.message);
-        //
+
+        // Not having an ongoing ride is the normal case, not a failure —
+        // don't alarm the user with an error snackbar for it.
+        if (err.message != "No ongoing ride found for client") {
+          showSnackBar(err.message);
+        }
 
         emit(ErrorCheckRide(message: err.message));
       },
-      (res) async {
-
-        PostDetailsCubit.of(MagicRouter.currentContext).setRideData(id: res.ride);
+      (res) {
+        PostDetailsCubit.of(MagicRouter.currentContext)
+            .setRideData(id: res.ride);
 
         MagicRouter.navigateAndPopAll(TrackerMapView(
           board: res.board,
@@ -46,10 +58,9 @@ class CheckRideCubit extends Cubit<CheckRideState> {
           iDdriver: res.driverId,
           ride: res.ride,
           status: res.status,
-
         ));
-        showSnackBar(res.message!);
 
+        showSnackBar(res.message!);
         emit(CheckRideSuccess(message: res.message!));
       },
     );

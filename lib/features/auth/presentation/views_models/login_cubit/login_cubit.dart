@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
   bool localeIsEn = true;
 
   Future login() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.mobile ||
-        connectivityResult != ConnectivityResult.wifi) {
-     /* showSnackBar(
-        LocaleKeys.noInternetConnectivity.tr(),
-      );*/
-    }
-
+   
     if (emailController.text.length < 10) {
       showSnackBar(
         LocaleKeys.pleaseProvideAValidEmailAddress.tr(),

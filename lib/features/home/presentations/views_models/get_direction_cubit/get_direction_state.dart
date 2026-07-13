@@ -61,3 +61,19 @@ final class TestNull extends GetDirectionState {
   const TestNull() : super("No State");
 } // class GetDirectionGetRequest extends GetDirectionState {}
 // class GetDirectionDoneRequest extends GetDirectionState {}
+
+ 
+// ─── [NEW] DirectionUpdated ──────────────────────────────────────────────────
+// Emitted every 10 seconds by _updateDirectionInfo().
+// Carries the latest distance and ETA from driver → passenger.
+// The map UI listens for this to refresh the info card.
+class DirectionUpdated extends GetDirectionState {
+  final String distance; // e.g. "1.2 km"
+  final String duration; // e.g. "4 mins"
+ 
+  const DirectionUpdated(super.travelState,
+      {required this.distance, required this.duration});
+ 
+  @override
+  List<Object> get props => [travelState, distance, duration];
+}

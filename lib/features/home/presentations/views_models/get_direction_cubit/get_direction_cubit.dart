@@ -29,6 +29,11 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   GetDirectionCubit() : super(GetDirectionInitial()) {}
 
   static GetDirectionCubit of(context) => BlocProvider.of(context);
+   StreamSubscription<Position>? _positionStream; // passenger live location stream
+  Timer? _directionUpdateTimer;                  // periodic ETA/distance refresh
+  String currentDistance = '';                   // shown on map card
+  String currentDuration = '';                   // shown on map card
+ 
   DirectionDetails? directionDetails;
   ReceiptModel? receiptModel;
   DriverModel? driverModel;
@@ -65,22 +70,42 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
   // }
   @override
   Future<void> close() {
+    _positionStream?.cancel();          // [NEW] passenger location stream
+    stopRealTimeDirectionUpdates(); 
     listenNotificationSubscription?.cancel();
     // TODO: implement close
     return super.close();
   }
-
-  void getCurrentPositionUpdate() async {
+void getCurrentPositionUpdate() async {
+    // Initial snapshot so the map isn't empty on first load
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.bestForNavigation);
     currentPosition = position;
+ 
     GoogleMapController googleMapController = await controllerx.future;
-
     googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             zoom: 18,
             target:
-                LatLng(currentPosition.latitude, currentPosition.longitude))));
+                LatLng(currentPosition!.latitude, currentPosition!.longitude))));
+ 
+    // [NEW] Continuous stream — replaces the one-shot call above
+    _positionStream = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.bestForNavigation,
+        distanceFilter: 10, // metres; tune up to reduce battery use
+      ),
+    ).listen((Position newPosition) async {
+      currentPosition = newPosition;
+ 
+      GoogleMapController controller = await controllerx.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          zoom: 18,
+          target: LatLng(newPosition.latitude, newPosition.longitude))));
+ 
+      // Refresh map markers to reflect new passenger position
+      emit(GetDriverDataLoadingDone(state.travelState));
+    });
   }
 
   // void getCurrentPositionUpdate() async {
@@ -126,7 +151,8 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
       testNull = true;
       emit(TestNull());
       return null;
-    } else {
+    } else {  testNull = false; // ADD THIS
+
       directionDetails = DirectionDetails(
           distanceText: response['routes'][0]['legs'][0]['distance']['text'],
           distanceValue: response['routes'][0]['legs'][0]['distance']['value'],
@@ -142,7 +168,74 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
       return directionDetails;
     }
   }
-
+void startRealTimeDirectionUpdates() {
+    _directionUpdateTimer?.cancel();
+    _directionUpdateTimer =
+        Timer.periodic(const Duration(seconds: 10), (_) {
+      _updateDirectionInfo();
+    });
+  }
+ 
+  // ─── [NEW] stopRealTimeDirectionUpdates ─────────────────────────────────────
+  // Called in close() to clean up the timer.
+  void stopRealTimeDirectionUpdates() {
+    _directionUpdateTimer?.cancel();
+    _directionUpdateTimer = null;
+  }
+   Future<void> _updateDirectionInfo() async {
+    if (currentPosition == null || driverLocation == null) return;
+ 
+    final String url =
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${driverLocation!.latitude},${driverLocation!.longitude}&destination=${currentPosition!.latitude},${currentPosition!.longitude}&mode=driving&key=$mapKeyWithBilling';
+ 
+    try {
+      final response = await RequestHelper.getRequest(url);
+      if (response == 'failed' || response['status'] != 'OK') return;
+ 
+      final leg = response['routes'][0]['legs'][0];
+      currentDistance = leg['distance']['text']; // e.g. "1.2 km"
+      currentDuration = leg['duration']['text']; // e.g. "4 mins"
+ 
+      // Redraw polyline with the latest route
+      final String encodedPoints =
+          response['routes'][0]['overview_polyline']['points'];
+      polylineCoordinates = _decodePolyline(encodedPoints);
+ 
+      emit(DirectionUpdated(state.travelState,
+          distance: currentDistance, duration: currentDuration));
+    } catch (e) {
+      log('Direction update error: $e');
+    }
+  }
+   List<LatLng> _decodePolyline(String encoded) {
+    List<LatLng> points = [];
+    int index = 0;
+    final int len = encoded.length;
+    int lat = 0, lng = 0;
+ 
+    while (index < len) {
+      int shift = 0, result = 0, b;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      lat += (result & 1) != 0 ? ~(result >> 1) : result >> 1;
+ 
+      shift = 0;
+      result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      lng += (result & 1) != 0 ? ~(result >> 1) : result >> 1;
+ 
+      points.add(LatLng(lat / 1e5, lng / 1e5));
+    }
+    return points;
+  }
+ 
   void cancelRequest() {
     listenNotificationSubscription?.cancel();
   }
@@ -182,6 +275,7 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
         print("test1111");
 
         MagicRouter.navigateTo(TrackerMapView(
+          
           iDdriver: iDdriver,
           board: board,
           driver: driver,
@@ -232,7 +326,7 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
     });
   }
 
-  Future<Position> getDriverLocation() async {
+  Future<Position?> getDriverLocation() async {
     emit(GetDriverDataLoad(state.travelState));
     reference.onValue.listen((DatabaseEvent event) async {
       // emit(GetDriverDataLoaded());
@@ -267,10 +361,13 @@ class GetDirectionCubit extends Cubit<GetDirectionState> {
             CameraPosition(
                 zoom: 17.5,
                 target: LatLng(
-                    driverLocation.latitude, driverLocation.longitude))));
+                    driverLocation!.latitude, driverLocation!.longitude))));
         panelController.open();
 
         emit(GetDriverDataLoadingDone(state.travelState));
+         if (_directionUpdateTimer == null || !_directionUpdateTimer!.isActive) {
+          startRealTimeDirectionUpdates();
+        }
       }
     });
     return driverLocation;

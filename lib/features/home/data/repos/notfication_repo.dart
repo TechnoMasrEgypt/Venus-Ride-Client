@@ -30,13 +30,11 @@ class NotficationRepo {
       if (response.statusCode == 200 && response.data['status'] == 'success') {
         log("Success notficationRepo");
         print(response);
-        return Right(
-            NotficationchModel.fromJson(jsonDecode(response.toString())));
+        return Right(NotficationchModel.fromJson(response.data));
       } else {
         PrintHalper.printError('error');
-        return Left(ErrorModel.fromJson(jsonDecode(response.toString()))
-            .message
-            .toString());
+       return Left(ErrorModel.fromJson(response.data).message.toString());
+
       }
     } catch (e) {
       return Left(e.toString());

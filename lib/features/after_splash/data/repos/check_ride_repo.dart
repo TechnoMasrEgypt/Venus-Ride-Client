@@ -24,6 +24,7 @@ class CheckRideRepo {
         return Left(CheckDriveError.fromJson(jsonDecode(response.toString())));
       } else if (response.statusCode == 200 && response.data["id"] != null) {
         print("Success PostDetailsRepo");
+        print("Success PostDetailsRepo");
         print('////////////////');
         print(response);
         print('////////////////');

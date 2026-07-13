@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:taxi/core/widgets/wakelock/wackelock.dart';
+// import 'package:taxi/core/widgets/wakelock/wackelock.dart';
 import 'package:taxi/features/home/presentations/views_models/Check_ride_cubit/check_ride_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/get_driver_cubit/get_driver_cubit.dart';
 import 'package:taxi/features/home/presentations/views_models/notfication_cubit/cubit/notfication_cubit.dart';
@@ -32,10 +31,10 @@ import 'features/home/presentations/views_models/rate_model/rate_cubit.dart';
 
 //.....................firebase messaging...............//
 
-//.....................firebase messaging...............//
+//.....................firebase messaging............
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Wakelock.enable();
+  // Wakelock.enable();
   await Firebase.initializeApp(
     name: 'VenusDriver',
     options: DefaultFirebaseOptionsCaptin.currentPlatform,
@@ -47,7 +46,6 @@ void main() async {
 
 
   await EasyLocalization.ensureInitialized();
-  //.....................firebase messaging...............//
 
 
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -142,32 +140,32 @@ class Taxi extends StatefulWidget {
 
 class _TaxiState extends State<Taxi> {
   // cheek internet
-  Map _source = {ConnectivityResult.none: false};
-  @override
-  void initState() {
-    NetworkConnectivity.instance.initialise();
-    NetworkConnectivity.instance.myStream.listen((source) {
-      _source = source;
-      log('source $_source');
-      switch (_source.keys.toList()[0]) {
-        case ConnectivityResult.mobile:
-          _source.values.toList()[0]
-              ? log('Network Connection')
-              : MagicRouter.navigateTo(const InternetConnectionError());
-          break;
-        case ConnectivityResult.wifi:
-          _source.values.toList()[0]
-              ? log('Network Connection')
-              : MagicRouter.navigateTo(const InternetConnectionError());
-          break;
-        case ConnectivityResult.none:
-        default:
-          MagicRouter.navigateTo(const InternetConnectionError());
-      }
-      setState(() {});
-    });
-    super.initState();
-  }
+  // Map _source = {ConnectivityResult.none: false};
+  // @override
+  // void initState() {
+  //   NetworkConnectivity.instance.initialise();
+  //   NetworkConnectivity.instance.myStream.listen((source) {
+  //     _source = source;
+  //     log('source $_source');
+  //     switch (_source.keys.toList()[0]) {
+  //       case ConnectivityResult.mobile:
+  //         _source.values.toList()[0]
+  //             ? log('Network Connection')
+  //             : MagicRouter.navigateTo(const InternetConnectionError());
+  //         break;
+  //       case ConnectivityResult.wifi:
+  //         _source.values.toList()[0]
+  //             ? log('Network Connection')
+  //             : MagicRouter.navigateTo(const InternetConnectionError());
+  //         break;
+  //       case ConnectivityResult.none:
+  //       default:
+  //         MagicRouter.navigateTo(const InternetConnectionError());
+  //     }
+  //     setState(() {});
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {

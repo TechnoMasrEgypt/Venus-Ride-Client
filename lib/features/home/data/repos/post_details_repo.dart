@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:taxi/core/utils/app_storage.dart';
+import 'package:taxi/features/home/data/models/piceandtimesettingmodel.dart';
 import '../../../../core/utils/cache_helper.dart';
 import '../../../../core/utils/dio_helper.dart';
 import '../../../../core/utils/end_points.dart';
@@ -75,4 +76,31 @@ class PostDetailsRepo {
       return Left(e.toString());
     }
   }
+  Future<Either<String, SettingsResponse>> getSettings() async {
+  final response = await DioHelper.get(
+    EndPoints.settings,
+    headers: {
+      'client': CacheHelper.getData(key: 'userId'),
+      'lang': AppStorage.getLang,
+    },
+  );
+
+  try {
+    if (response.statusCode == 200) {
+      return Right(
+        SettingsResponse.fromJson(
+          jsonDecode(response.toString()),
+        ),
+      );
+    } else {
+      return Left(
+        ErrorModel.fromJson(jsonDecode(response.toString()))
+            .message
+            .toString(),
+      );
+    }
+  } catch (e) {
+    return Left(e.toString());
+  }
+}
 }

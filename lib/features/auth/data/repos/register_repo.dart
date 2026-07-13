@@ -14,31 +14,39 @@ class RegisterRepo {
       required String phone,
       required String password,
       required String conPassword}) async {
-    final devicetoken = await FirebaseMessaging.instance.getToken();
-
-    final response = await DioHelper.post(EndPoints.register, body: {
-      'name': name,
-      'phone': phone,
-      'password': password,
-      'password_confirmation': conPassword,
-      'device_token': devicetoken,
-    }, headers: {
-      'Accept': 'application/json',
-      'lang': AppStorage.getLang,
-      //'token_device':CacheHelper.getData(key: 'token'),
-    });
+    String? devicetoken;
     try {
-      if (response.statusCode == 200 && response.data['status'] == 'success') {
-        print("Success RegisterRepo");
-        print(response);
-        return Right(UserModel.fromJson(jsonDecode(response.toString())));
-      } else {
-        print(response);
-        return Left(ErrorModel.fromJson(jsonDecode(response.toString()))
-            .message
-            .toString());
-      }
+      devicetoken = await FirebaseMessaging.instance.getToken();
     } catch (e) {
+      print('FCM token fetch failed: $e');
+      devicetoken = null;
+    }
+
+    try {
+      final response = await DioHelper.post(EndPoints.register, body: {
+        'name': name,
+        'phone': phone,
+        'password': password,
+        'password_confirmation': conPassword,
+        'device_token': devicetoken,
+      }, headers: {
+        'Accept': 'application/json',
+        'lang': AppStorage.getLang,
+      });
+
+      print('STATUS CODE: ${response.statusCode}');
+      print('RAW RESPONSE DATA: ${response.data}');
+      print('RESPONSE DATA TYPE: ${response.data.runtimeType}');
+
+      if (response.statusCode == 200 && response.data['status'] == 'success') {
+        return Right(UserModel.fromJson(response.data));
+      } else {
+        // print('PARSED ERROR: ${response.data}');
+        return Left(ErrorModel.fromJson(response.data).message.toString());
+      }
+    } catch (e, stack) {
+      print('EXCEPTION IN REGISTER: $e');
+      print('STACK TRACE: $stack');
       return Left(e.toString());
     }
   }

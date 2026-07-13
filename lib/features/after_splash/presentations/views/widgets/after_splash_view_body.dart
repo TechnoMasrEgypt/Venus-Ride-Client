@@ -50,10 +50,11 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
 
   @override
   void initState() {
-    getCurrentPosition();
-    NotficationCubit.of(context)..sendNotfication();
-
     super.initState();
+    getCurrentPosition();
+    NotficationCubit.of(context).sendNotfication();
+    // [ADD] Start listening for driver acceptance on Firebase
+    GetDirectionCubit.of(context).getRequest();
   }
 
   @override
@@ -62,20 +63,27 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
     final getDirectionCubit = GetDirectionCubit.of(context);
     return BlocBuilder<CheckRideCubit, CheckRideState>(
       builder: (context, state) {
-        if (state is StartCheckRide ) {
+        if (state is StartCheckRide) {
           return LoadingIndicator();
-        }else if(state is ErrorCheckRide){
-          Container(
+        } else if (state is ErrorCheckRide &&
+            state.message != "No ongoing ride found for client") {
+          return Container(
             width: double.infinity,
             height: double.infinity,
             child: Column(
               children: [
-                SvgPicture.asset('assets/images/warning.svg',
+                SvgPicture.asset(
+                  'assets/images/warning.svg',
                   alignment: Alignment.center,
-                  fit: BoxFit.cover,),
-                SizedBox(height: 100,),
-                Text(state.message,style: FontStyles.textStyle13
-                    .copyWith(color: Colors.black),)
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(
+                  height: 100,
+                ),
+                Text(
+                  state.message,
+                  style: FontStyles.textStyle13.copyWith(color: Colors.black),
+                )
               ],
             ),
           );
@@ -126,10 +134,15 @@ class _AfterSplashViewBodyState extends State<AfterSplashViewBody> {
                           icon: Icons.location_off,
                           text: LocaleKeys.withoutDestination.tr(),
                           onTap: () {
+                            if (currentPosition == null) {
+                              showSnackBar(
+                                  'Fetching your location, please wait...');
+                              getCurrentPosition();
+                              return;
+                            }
                             buildBookRideShowModalBottomSheetWithoutDes(
                                 context);
-                            getDirectionCubit.driverArrived();
-                            print(currentPosition);
+                            // getDirectionCubit.driverArrived();
                           },
                         ),
                       ),

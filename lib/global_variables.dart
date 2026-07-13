@@ -24,10 +24,10 @@ const CameraPosition googlePlex = CameraPosition(
 
 //......................................................................//
 String currentLocation = LocaleKeys.yourLocation.tr();
-late Position currentPosition;
+Position? currentPosition;
 late GoogleMapController mapController;
 late LatLng destinationPosition;
-Position driverLocation = currentPosition;
+Position? driverLocation;
 late DirectionDetails directionDetailsGlobal;
 TextEditingController currentLocationController = TextEditingController();
 TextEditingController destinationController = TextEditingController();

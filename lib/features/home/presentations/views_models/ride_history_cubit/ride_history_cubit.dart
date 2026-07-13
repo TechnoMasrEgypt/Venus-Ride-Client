@@ -27,6 +27,8 @@ class RideHistoryCubit extends Cubit<RideHistoryState> {
       (res) async {
         log('sucsess');
         list = res.data;
+          list.sort((a, b) => b.date!.compareTo(a.date!)); // newest first
+
         emit(RideHistoryInitial());
       },
     );

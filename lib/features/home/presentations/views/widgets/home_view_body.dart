@@ -1,8 +1,5 @@
-
-
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:taxi/features/home/presentations/views_models/post_details_cubit/post_details_cubit.dart';
 
 import '../../../../../core/utils/app_assets.dart';
 import '../../../../../core/utils/cache_helper.dart';
@@ -68,10 +66,12 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   void getPolyPoints() async {
     PolylinePoints polylinePoints = PolylinePoints(apiKey: mapKey);
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      request: PolylineRequest(origin: PointLatLng(currentPosition.latitude, currentPosition.longitude)
-          , destination: PointLatLng(destinationPosition.latitude,
-              destinationPosition.longitude),
-        mode: TravelMode.driving)// Your Google Map Key
+      request: PolylineRequest(
+          origin: PointLatLng(
+              currentPosition!.latitude, currentPosition!.longitude),
+          destination: PointLatLng(
+              destinationPosition.latitude, destinationPosition.longitude),
+          mode: TravelMode.driving) // Your Google Map Key
       ,
     );
     if (result.points.isNotEmpty) {
@@ -102,8 +102,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     googleMapController.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
             zoom: 18,
-            target:
-                LatLng(currentPosition.latitude, currentPosition.longitude))));
+            target: LatLng(
+                currentPosition!.latitude, currentPosition!.longitude))));
   }
 
   @override
@@ -111,16 +111,14 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     super.initState();
     // GetDirectionCubit.of(context).getRequest();
     // GetDirectionCubit.of(context).getReceipt();
-    try{
+
+    try {
       setCustomMarker();
       getCurrentPositionUpdate();
       DefaultAssetBundle.of(context)
           .loadString('assets/map/map_theme.json')
           .then((value) => {mapTheme = value});
-    }catch(e){
-
-    }
-
+    } catch (e) {}
   }
 
   @override
@@ -208,15 +206,22 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   markersList.add(Marker(
                       icon: sourceIcon,
                       markerId: const MarkerId("currentPosition"),
-                      position: LatLng(
-                          currentPosition.latitude, currentPosition.longitude),
+                      position: LatLng(currentPosition!.latitude,
+                          currentPosition!.longitude),
                       infoWindow: const InfoWindow(title: 'Current Position')));
-                 setCustomMarker();
-               getPolyPoints();
+                  setCustomMarker();
+                  getPolyPoints();
                   destinationController.text = detail.result.name;
                   currentLocationController.text = currentLocation;
-                 cubit.getDirectionDetails(
-                      currentPosition, destinationPosition);
+                  if (currentPosition != null) {
+                    final result = await cubit.getDirectionDetails(
+                        currentPosition!, destinationPosition);
+                    if (result == null) {
+                      showSnackBar(
+                          'Could not calculate route. Please try a different destination.');
+                      return;
+                    }
+                  }
                   setState(() {});
                   mapController.animateCamera(CameraUpdate.newCameraPosition(
                       CameraPosition(target: destinationPosition, zoom: 17)));
@@ -251,15 +256,14 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                   textColor: kWhite,
                   backgroundColor: kDeepBlue,
                   onPressed: () async {
-                    var connectivityResult =
-                        await (Connectivity().checkConnectivity());
-                    if (connectivityResult != ConnectivityResult.mobile &&
-                        connectivityResult != ConnectivityResult.wifi) {
-                      showSnackBar(
-                        LocaleKeys.noInternetConnectivity.tr(),
-                      );
-                    }
                     try {
+                      final postCubit = PostDetailsCubit.of(context);
+
+                      // تحديث الأسعار من السيرفر
+
+                      final success = await postCubit.getSettings();
+
+                      if (!success) return;
                       buildSearchModalBottomSheet(context);
                       GetDirectionCubit.of(context)
                           .changetravelstate("وافق السائق");

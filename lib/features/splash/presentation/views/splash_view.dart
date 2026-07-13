@@ -1,66 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:taxi/features/after_splash/presentations/views/after_splash_view.dart';
+import 'package:taxi/features/onBoarding/data/presentation/view/on_boarding_view.dart';
+import '../../../../../core/utils/cache_helper.dart';
+import '../../../../../core/utils/magic_router.dart';
 import 'widgets/splash_view_body.dart';
 
-class SplashView extends StatefulWidget{
+class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
-
-
 
   @override
   State<SplashView> createState() => _SplashViewState();
 }
 
 class _SplashViewState extends State<SplashView> {
-
   @override
   void initState() {
-    _handlePermissions(context);
     super.initState();
+    _startSplashSequence();
   }
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: SplashViewBody());
+
+  Future<void> _startSplashSequence() async {
+    // Run permission handling and the minimum splash duration together.
+    // Navigation only happens once BOTH are done, so there's no race.
+    await Future.wait([
+      _handlePermissions(),
+      Future.delayed(const Duration(seconds: 5)),
+    ]);
+
+    if (!mounted) return;
+    _goNext();
   }
-  Future<void> _handlePermissions(BuildContext context) async {
-    // Step 1: Foreground location
+
+  void _goNext() {
+    if (CacheHelper.getData(key: 'login') == true) {
+      MagicRouter.navigateAndPopAll(const AfterSplashView());
+    } else {
+      MagicRouter.navigateAndPopAll(const OnBoardingView());
+    }
+  }
+
+  Future<void> _handlePermissions() async {
     final fgStatus = await Permission.location.request();
+    if (!mounted) return;
 
     if (fgStatus.isGranted) {
-      // Step 2: Show disclosure
       await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (_) => AlertDialog(
-          title: Text('Location Access Required'),
-          content: Text(
+          title: const Text('Location Access Required'),
+          content: const Text(
               'This app collects your location in the background to enable [your reason here], even when the app is closed.'),
           actions: [
             TextButton(
-              child: Text('Continue'),
+              child: const Text('Continue'),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
         ),
       );
+      if (!mounted) return;
 
-      // Step 3: Request background
       final bgStatus = await Permission.locationAlways.request();
+      if (!mounted) return;
 
-      if (bgStatus.isGranted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Background location granted')),
-        );
-        // Navigate to home or main screen
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Background location denied')),
-        );
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(bgStatus.isGranted
+              ? 'Background location granted'
+              : 'Background location denied'),
+        ),
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Foreground location denied')),
+        const SnackBar(content: Text('Foreground location denied')),
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(body: SplashViewBody());
   }
 }

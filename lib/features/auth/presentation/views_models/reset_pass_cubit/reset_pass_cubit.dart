@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,13 +21,7 @@ class ResetPassCubit extends Cubit<ResetPassState> {
   bool showConPassword = true;
 
   Future resetPass() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult != ConnectivityResult.mobile &&
-        connectivityResult != ConnectivityResult.wifi) {
-      showSnackBar(
-        LocaleKeys.noInternetConnectivity.tr(),
-      );
-    }
+  
     if (passwordController.text.length < 8) {
       showSnackBar(
         LocaleKeys.pleaseProvideAValidPasswordShouldGreaterThan8Character.tr(),

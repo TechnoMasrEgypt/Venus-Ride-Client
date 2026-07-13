@@ -2,7 +2,7 @@ name: taxi
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1.7
 
 environment:
-  sdk: '>=3.2.2 <4.0.0'
+  sdk: ">=3.2.2 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,7 +32,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_bloc: ^8.1.1
   flutter_rating_bar: ^4.0.1
-  intl: 
+  intl:
   dotted_line: ^3.1.0
   sliding_up_panel: ^2.0.0+1
   country_picker: ^2.0.20
@@ -43,7 +43,6 @@ dependencies:
   pinput: ^2.2.31
   font_awesome_flutter: ^10.4.0
   awesome_dialog: ^3.0.2
-  connectivity_plus: ^6.1.4
   google_maps_flutter: ^2.1.5
   google_api_headers: ^4.4.5
   geolocator: ^14.0.2
@@ -55,7 +54,7 @@ dependencies:
   easy_rich_text: ^1.2.0
   avatar_glow:
   image_picker: ^0.8.7+1
-  easy_localization: 
+  easy_localization:
   url_launcher: ^6.1.10
   get_storage: ^2.1.1
   dartz:
@@ -80,12 +79,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   firebase_database: ^12.0.1
- # gradient_ui_widgets: ^1.0.2-nullsafety
+  # gradient_ui_widgets: ^1.0.2-nullsafety
 
 dev_dependencies:
   flutter_test:
@@ -94,7 +92,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/venus.png"
-  min_sdk_android: 21    
+  min_sdk_android: 21
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -108,7 +106,6 @@ flutter_icons:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -116,11 +113,11 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/
-     - assets/map/
-     - assets/translations/
-     - assets/json/
-     - assets/sounds/
+    - assets/images/
+    - assets/map/
+    - assets/translations/
+    - assets/json/
+    - assets/sounds/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -135,9 +132,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: Cairo
-       fonts:
-         - asset: assets/fonts/Cairo-Regular.ttf
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-Regular.ttf
   #         - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
