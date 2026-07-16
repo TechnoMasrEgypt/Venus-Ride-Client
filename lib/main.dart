@@ -207,7 +207,7 @@ class _TaxiState extends State<Taxi> {
               create: (context) => NotficationCubit(),
             ),
           ],
-          child: MaterialApp(
+          child: MaterialApp( 
             home: const SplashView(),
             navigatorKey: navigatorKey,
             localizationsDelegates: context.localizationDelegates,
