@@ -35,10 +35,9 @@ import 'features/home/presentations/views_models/rate_model/rate_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Wakelock.enable();
-  await Firebase.initializeApp(
-    name: 'VenusDriver',
-    options: DefaultFirebaseOptionsCaptin.currentPlatform,
-  );
+  await  Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+ );
 
   setupPushNotifications();
 
@@ -90,6 +89,8 @@ void main() async {
           ));
     }
   });
+  Bloc.observer = AppBlocObserver();
+  await CacheHelper.init();
   runApp(EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
       assetLoader: const CodegenLoader(),
@@ -98,8 +99,7 @@ void main() async {
       child: DevicePreview(
           enabled: false,
           builder: (_)=>Taxi())));
-  Bloc.observer = AppBlocObserver();
-  await CacheHelper.init();
+  
 }
 Future<void> setupPushNotifications() async {
 

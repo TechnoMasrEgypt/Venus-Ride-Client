@@ -4,20 +4,16 @@ import java.io.FileInputStream
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services") version "4.4.3" apply true
 }
+
 val keystorePropertiesFile = rootProject.file("key.properties")
-
-// Initialize a new Properties() object called keystoreProperties.
-var keystoreProperties =  Properties()
-
-// Load your keystore.properties file into the keystoreProperties object.
+var keystoreProperties = Properties()
 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 android {
-    namespace = "com.technomasr.venusrideclient"
+    namespace = "com.techmasr.venusclient"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "28.2.13676358"
 
@@ -31,32 +27,34 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.technomasr.venusrideclient"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.techmasr.venusclient"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
 
-        ndk {
-            abiFilters += listOf("armeabi-v7a", "arm64-v8a")
-        }
+        // ✅ اتشالت ndk block من هنا
 
-        // ✅ External Native Build (CMake)
         externalNativeBuild {
             cmake {
-                // No cppFlags needed here unless you want to add them
-                // cppFlags += "" <-- Kotlin DSL doesn't support += like Groovy
+                // cppFlags هنا لو محتاج
             }
         }
     }
+
     externalNativeBuild {
         cmake {
             path = file("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
         }
     }
 
@@ -64,37 +62,24 @@ android {
         getByName("release") {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
-    signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"]as String)
-            storePassword = keystoreProperties["storePassword"] as String
-        }
-    }
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("release")
-        }
-    }
+
     dependencies {
         coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
-        implementation ("com.facebook.android:facebook-login:latest.release")
-        implementation(platform("com.google.firebase:firebase-bom:33.0.0")) // Use the latest BOM version
+        implementation("com.facebook.android:facebook-login:latest.release")
+        implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
         implementation("com.google.firebase:firebase-auth")
-        }
     }
-
+}
 
 flutter {
     source = "../.."
 }
+
 apply(plugin = "com.google.gms.google-services")

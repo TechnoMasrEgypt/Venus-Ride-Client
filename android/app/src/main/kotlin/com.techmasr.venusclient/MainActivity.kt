@@ -1,4 +1,4 @@
-package com.technomasr.venusrideclient
+package com.techmasr.venusclient
 
 import io.flutter.embedding.android.FlutterActivity
 
